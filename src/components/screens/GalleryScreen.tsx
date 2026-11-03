@@ -29,15 +29,15 @@ export default function GalleryScreen({ item, index, total }: GalleryScreenProps
     : `Moment ${index + 1} of ${total}`;
 
   return (
-    <section className="w-full h-full relative flex flex-col justify-between items-center bg-slate-950 text-white overflow-hidden p-3 sm:p-8">
+    <section className="w-full h-full relative flex flex-col justify-between items-center bg-slate-950 text-white overflow-hidden p-3 sm:p-8 landscape:p-3 landscape:px-8">
       {/* Background ambient lighting matching the photo's palette */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full blur-[160px] pointer-events-none"
         style={{ backgroundColor: `${accent}22` }}
       />
 
-      {/* TOP: Headline and Category (হেডলাইনটা ওপরে দেখাবে - Safe from Mobile Language Button) */}
-      <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center text-center pt-2 space-y-1.5 pr-14 sm:pr-0">
+      {/* --- PORTRAIT ONLY: Top Headline and Category --- */}
+      <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center text-center pt-2 space-y-1.5 pr-14 sm:pr-0 landscape:hidden">
         <div className="flex items-center justify-between w-full pb-1">
           <div
             className="inline-flex items-center gap-1.5 px-3 py-0.5 sm:px-3.5 sm:py-1 rounded-full text-[11px] font-semibold backdrop-blur-md"
@@ -62,10 +62,11 @@ export default function GalleryScreen({ item, index, total }: GalleryScreenProps
         </h2>
       </div>
 
-      {/* CENTER: Full Image Showcase (ফুল আকারে দেখাবে with Picture-Harmonized Border Glow) */}
-      <div className="relative z-10 w-full max-w-4xl my-auto flex items-center justify-center px-1 sm:px-0">
+      {/* --- MAIN SHOWCASE AREA: Center Image in Portrait, Side-by-Side in Landscape --- */}
+      <div className="relative z-10 w-full max-w-5xl my-auto flex flex-col landscape:flex-row items-center justify-center landscape:gap-6 px-1 sm:px-0">
+        {/* Full Image Showcase */}
         <div
-          className="relative w-full max-h-[30vh] sm:max-h-[50vh] aspect-video rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-900 shadow-2xl group transition-all duration-500"
+          className="relative w-full landscape:w-auto landscape:max-w-[50%] max-h-[30vh] sm:max-h-[50vh] landscape:max-h-[72vh] aspect-video rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-900 shadow-2xl group transition-all duration-500 shrink-0"
           style={{
             border: `2px solid ${accent}50`,
             boxShadow: `0 20px 50px -10px ${accent}25`
@@ -82,10 +83,43 @@ export default function GalleryScreen({ item, index, total }: GalleryScreenProps
           <div className="absolute inset-0 z-10 select-none" onContextMenu={(e) => e.preventDefault()} />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent pointer-events-none" />
         </div>
+
+        {/* --- LANDSCAPE ONLY: Details beside image --- */}
+        <div className="hidden landscape:flex flex-col text-left space-y-2 max-w-md">
+          <div className="flex items-center gap-2">
+            <span
+              className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold backdrop-blur-md"
+              style={{
+                backgroundColor: `${accent}18`,
+                border: `1px solid ${accent}40`,
+                color: accent
+              }}
+            >
+              {category || t('galleryTitle')}
+            </span>
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-900 border border-slate-800 text-slate-400 font-mono">
+              {pageNumStr}
+            </span>
+          </div>
+          <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight leading-snug">
+            {title}
+          </h2>
+          {desc && (
+            <p
+              className="text-xs text-slate-200 leading-relaxed p-2.5 rounded-xl backdrop-blur-md"
+              style={{
+                backgroundColor: 'rgba(15, 23, 42, 0.85)',
+                border: `1px solid ${accent}30`
+              }}
+            >
+              {desc}
+            </p>
+          )}
+        </div>
       </div>
 
-      {/* BOTTOM: Description Details + Safe Clearance from Floating Chat Button on Mobile */}
-      <div className="relative z-10 w-full max-w-2xl mx-auto text-center space-y-2 mb-16 sm:mb-2 pb-0 sm:pb-3 px-3 sm:px-0">
+      {/* --- PORTRAIT ONLY: Bottom Description Details --- */}
+      <div className="relative z-10 w-full max-w-2xl mx-auto text-center space-y-2 mb-16 sm:mb-2 pb-0 sm:pb-3 px-3 sm:px-0 landscape:hidden">
         {desc && (
           <p
             className="text-xs sm:text-sm text-slate-200 leading-relaxed p-2.5 sm:p-3.5 rounded-2xl backdrop-blur-md shadow-md"

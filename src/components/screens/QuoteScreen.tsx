@@ -46,7 +46,7 @@ export default function QuoteScreen({ quote, index, total, profile }: QuoteScree
     : `Thought ${index + 1} of ${total}`;
 
   return (
-    <section className="w-full h-full relative flex flex-col justify-between items-center bg-slate-950 text-white overflow-hidden p-4 sm:p-12">
+    <section className="w-full h-full relative flex flex-col justify-between items-center bg-slate-950 text-white overflow-hidden p-4 sm:p-12 landscape:p-3 landscape:px-8">
       {/* 1. Full-screen Background Picture */}
       <div
         className="absolute inset-0 bg-cover bg-center pointer-events-none transform scale-105 transition-transform duration-1000"
@@ -73,22 +73,22 @@ export default function QuoteScreen({ quote, index, total, profile }: QuoteScree
       />
 
       {/* Top Bar: Category Pill & Index Badge (pr-16 on mobile avoids language button) */}
-      <div className="relative z-10 w-full max-w-4xl mx-auto flex items-center justify-between pt-2 sm:pt-4 pr-16 sm:pr-0">
+      <div className="relative z-10 w-full max-w-4xl mx-auto flex items-center justify-between pt-2 sm:pt-4 landscape:pt-0 pr-16 sm:pr-0">
         <div className="flex items-center gap-2">
           <span
-            className="p-2 rounded-xl backdrop-blur-md"
+            className="p-1.5 sm:p-2 rounded-xl backdrop-blur-md"
             style={{
               backgroundColor: `${accent}18`,
               border: `1px solid ${accent}40`,
               color: accent
             }}
           >
-            <Feather className="w-4 h-4" />
+            <Feather className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </span>
 
           {categoryText && (
             <span
-              className="px-3.5 py-1 rounded-full text-xs font-semibold backdrop-blur-md shadow-sm"
+              className="px-3 py-0.5 sm:px-3.5 sm:py-1 rounded-full text-xs font-semibold backdrop-blur-md shadow-sm"
               style={{
                 backgroundColor: `${accent}18`,
                 border: `1px solid ${accent}40`,
@@ -100,31 +100,31 @@ export default function QuoteScreen({ quote, index, total, profile }: QuoteScree
           )}
         </div>
 
-        <span className="text-xs px-3.5 py-1 rounded-full bg-black/60 border border-white/10 text-slate-300 font-mono backdrop-blur-md">
+        <span className="text-xs px-3 py-0.5 sm:px-3.5 sm:py-1 rounded-full bg-black/60 border border-white/10 text-slate-300 font-mono backdrop-blur-md">
           {pageNumStr}
         </span>
       </div>
 
       {/* Center: The Large Animated Quote Card with Picture-Based Accent */}
-      <div className="relative z-10 max-w-3xl mx-auto my-auto text-center space-y-4 sm:space-y-6 px-4">
+      <div className="relative z-10 max-w-3xl mx-auto my-auto text-center space-y-3 sm:space-y-6 landscape:space-y-1.5 px-4">
         <div
-          className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto shadow-2xl backdrop-blur-md"
+          className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto shadow-2xl backdrop-blur-md"
           style={{
             backgroundColor: `${accent}22`,
             border: `1px solid ${accent}50`,
             color: accent
           }}
         >
-          <Quote className="w-7 h-7 rotate-180" />
+          <Quote className="w-5 h-5 sm:w-7 sm:h-7 rotate-180" />
         </div>
 
-        <blockquote className="text-xl sm:text-3xl md:text-4xl font-medium text-white leading-relaxed sm:leading-loose tracking-wide font-sans drop-shadow-lg">
+        <blockquote className="text-lg sm:text-3xl md:text-4xl landscape:text-lg landscape:sm:text-xl font-medium text-white leading-relaxed sm:leading-loose landscape:leading-normal tracking-wide font-sans drop-shadow-lg">
           &ldquo;{quoteText}&rdquo;
         </blockquote>
 
         {authorText && (
           <p
-            className="text-base sm:text-lg font-bold italic font-mono pt-2"
+            className="text-sm sm:text-lg landscape:text-xs font-bold italic font-mono pt-1 landscape:pt-0"
             style={{ color: accent }}
           >
             {authorText}
@@ -133,7 +133,7 @@ export default function QuoteScreen({ quote, index, total, profile }: QuoteScree
       </div>
 
       {/* Bottom Spacer with Mobile Chat Clearance */}
-      <div className="h-16 sm:h-6" />
+      <div className="h-16 sm:h-6 landscape:h-1" />
     </section>
   );
 }

@@ -197,7 +197,7 @@ export default function ContactScreen({ contacts, profile }: ContactScreenProps)
     'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80';
 
   return (
-    <section className="w-full h-full relative flex flex-col justify-between items-center bg-[#020617] text-white overflow-hidden p-3 sm:p-6">
+    <section className="w-full h-full relative flex flex-col justify-between items-center bg-[#020617] text-white overflow-hidden p-3 sm:p-6 landscape:p-2 landscape:px-8">
       {/* 0. Deep Galaxy Space Background Layer with Atmospheric Vignette */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -218,23 +218,23 @@ export default function ContactScreen({ contacts, profile }: ContactScreenProps)
       />
 
       {/* 2. Top Header (Instructional subtitle removed per user request - Safe from Mobile Language Button) */}
-      <div className="text-center pt-2 sm:pt-3 z-10 px-14 sm:px-4">
-        <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-cyan-950/80 border border-cyan-500/30 text-cyan-400 text-xs font-semibold mb-1.5 shadow-sm">
+      <div className="text-center pt-2 sm:pt-3 landscape:pt-0.5 z-10 px-14 sm:px-4">
+        <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-cyan-950/80 border border-cyan-500/30 text-cyan-400 text-xs landscape:text-[10px] mb-1 landscape:mb-0.5 shadow-sm">
           <Sparkles className="w-3.5 h-3.5" />
           <span>{lang === 'bn' ? 'কানেকশন হাব ও সোশ্যাল গ্যালাক্সি' : 'Connection Hub & Orbit'}</span>
         </div>
-        <h2 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight drop-shadow-md">
+        <h2 className="text-xl sm:text-3xl landscape:text-lg font-extrabold text-white tracking-tight drop-shadow-md">
           {lang === 'bn' ? 'সোশ্যাল মিডিয়া ও যোগাযোগের মাধ্যম' : 'Social Media & Connections'}
         </h2>
       </div>
 
       {/* 3. CENTERPIECE: 3D Celestial Orbit Constellation Hub (Sleek, Compact, Zero Overlap) */}
-      <div className="relative w-full max-w-2xl my-auto flex items-center justify-center h-[280px] sm:h-[340px] select-none z-10">
+      <div className="relative w-full max-w-2xl my-auto flex items-center justify-center h-[260px] sm:h-[340px] landscape:h-[160px] select-none z-10">
         {/* Orbital Concentric Ring 1 (Inner Glowing Dashed Orbit) */}
-        <div className="absolute w-[200px] h-[120px] sm:w-[310px] sm:h-[185px] rounded-[50%] border border-cyan-500/25 border-dashed pointer-events-none animate-[spin_120s_linear_infinite]" />
+        <div className="absolute w-[180px] h-[110px] sm:w-[310px] sm:h-[185px] landscape:w-[170px] landscape:h-[95px] rounded-[50%] border border-cyan-500/25 border-dashed pointer-events-none animate-[spin_120s_linear_infinite]" />
 
         {/* Orbital Concentric Ring 2 (Outer Cosmic Orbit Ellipse) */}
-        <div className="absolute w-[265px] h-[160px] sm:w-[400px] sm:h-[240px] rounded-[50%] border border-indigo-500/30 pointer-events-none shadow-[0_0_40px_rgba(99,102,241,0.12)]" />
+        <div className="absolute w-[240px] h-[145px] sm:w-[400px] sm:h-[240px] landscape:w-[220px] landscape:h-[125px] rounded-[50%] border border-indigo-500/30 pointer-events-none shadow-[0_0_40px_rgba(99,102,241,0.12)]" />
 
         {/* SVG Constellation Ray Lines connecting the Nucleus to each orbiting satellite */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
@@ -385,7 +385,7 @@ export default function ContactScreen({ contacts, profile }: ContactScreenProps)
       </div>
 
       {/* 4. Bottom Dock: Contact Strip + Live Stats + English Copyright + Mobile Clearance */}
-      <div className="w-full max-w-3xl mx-auto flex flex-col items-center text-center space-y-2.5 mb-16 sm:mb-2 pb-1 sm:pb-2.5 z-10 pt-2 border-t border-slate-800/60">
+      <div className="w-full max-w-3xl mx-auto flex flex-col items-center text-center space-y-2 mb-16 sm:mb-2 landscape:mb-1 pb-1 sm:pb-2.5 landscape:pb-0 z-10 pt-1.5 border-t border-slate-800/60">
         {/* Direct Contact Pills: Phone and Email */}
         <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-4 text-xs text-slate-300 font-mono">
           {primaryPhone && (
