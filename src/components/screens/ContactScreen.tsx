@@ -197,7 +197,7 @@ export default function ContactScreen({ contacts, profile }: ContactScreenProps)
     'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80';
 
   return (
-    <section className="w-full h-screen h-[100dvh] min-h-[100dvh] relative flex flex-col justify-between items-center bg-[#020617] text-white overflow-hidden p-3 sm:p-6">
+    <section className="w-full h-full relative flex flex-col justify-between items-center bg-[#020617] text-white overflow-hidden p-3 sm:p-6">
       {/* 0. Deep Galaxy Space Background Layer with Atmospheric Vignette */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -384,8 +384,8 @@ export default function ContactScreen({ contacts, profile }: ContactScreenProps)
         })}
       </div>
 
-      {/* 4. Bottom Dock: Contact Strip + Live Stats + English Copyright */}
-      <div className="w-full max-w-3xl mx-auto flex flex-col items-center text-center space-y-2.5 pb-2.5 z-10 pt-2 border-t border-slate-800/60">
+      {/* 4. Bottom Dock: Contact Strip + Live Stats + English Copyright + Mobile Clearance */}
+      <div className="w-full max-w-3xl mx-auto flex flex-col items-center text-center space-y-2.5 mb-16 sm:mb-2 pb-1 sm:pb-2.5 z-10 pt-2 border-t border-slate-800/60">
         {/* Direct Contact Pills: Phone and Email */}
         <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-4 text-xs text-slate-300 font-mono">
           {primaryPhone && (

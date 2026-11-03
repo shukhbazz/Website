@@ -29,7 +29,7 @@ export default function GalleryScreen({ item, index, total }: GalleryScreenProps
     : `Moment ${index + 1} of ${total}`;
 
   return (
-    <section className="w-full h-screen h-[100dvh] min-h-[100dvh] relative flex flex-col justify-between items-center bg-slate-950 text-white overflow-hidden p-3 sm:p-8">
+    <section className="w-full h-full relative flex flex-col justify-between items-center bg-slate-950 text-white overflow-hidden p-3 sm:p-8">
       {/* Background ambient lighting matching the photo's palette */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full blur-[160px] pointer-events-none"
@@ -65,7 +65,7 @@ export default function GalleryScreen({ item, index, total }: GalleryScreenProps
       {/* CENTER: Full Image Showcase (ফুল আকারে দেখাবে with Picture-Harmonized Border Glow) */}
       <div className="relative z-10 w-full max-w-4xl my-auto flex items-center justify-center px-1 sm:px-0">
         <div
-          className="relative w-full max-h-[38vh] sm:max-h-[52vh] aspect-video rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-900 shadow-2xl group transition-all duration-500"
+          className="relative w-full max-h-[30vh] sm:max-h-[50vh] aspect-video rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-900 shadow-2xl group transition-all duration-500"
           style={{
             border: `2px solid ${accent}50`,
             boxShadow: `0 20px 50px -10px ${accent}25`
@@ -84,8 +84,8 @@ export default function GalleryScreen({ item, index, total }: GalleryScreenProps
         </div>
       </div>
 
-      {/* BOTTOM: Description Details + Safe Distance from Floating Chat Button on Mobile */}
-      <div className="relative z-10 w-full max-w-2xl mx-auto text-center space-y-2 pb-16 sm:pb-3 px-3 sm:px-0">
+      {/* BOTTOM: Description Details + Safe Clearance from Floating Chat Button on Mobile */}
+      <div className="relative z-10 w-full max-w-2xl mx-auto text-center space-y-2 mb-16 sm:mb-2 pb-0 sm:pb-3 px-3 sm:px-0">
         {desc && (
           <p
             className="text-xs sm:text-sm text-slate-200 leading-relaxed p-2.5 sm:p-3.5 rounded-2xl backdrop-blur-md shadow-md"

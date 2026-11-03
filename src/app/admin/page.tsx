@@ -1151,7 +1151,7 @@ export default function AdminDashboardPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
                         <label className="block text-[11px] text-cyan-400 font-medium mb-1">
-                          বক্তা / রেফারেন্স (বাংলা) — যেমন: — সক্রেটিস
+                          বক্তা / রেফারেন্স (বাংলা) — ফাঁকা রাখলে প্রোফাইলের নাম ({config.profile.nameBn || 'সুখবাজ'}) দেখাবে
                         </label>
                         <input
                           type="text"
@@ -1161,13 +1161,13 @@ export default function AdminDashboardPage() {
                             updated[index].authorBn = e.target.value;
                             setConfig({ ...config, quotes: updated });
                           }}
-                          placeholder="— বক্তা বা রেফারেন্স লিখুন"
+                          placeholder={`— ${config.profile.nameBn || 'সুখবাজ'}`}
                           className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white"
                         />
                       </div>
                       <div>
                         <label className="block text-[11px] text-indigo-400 font-medium mb-1">
-                          Author / Reference (English) — e.g. — Socrates
+                          Author / Reference (English) — leave empty for ({config.profile.nameEn || 'Shukhbazz'})
                         </label>
                         <input
                           type="text"
@@ -1177,7 +1177,7 @@ export default function AdminDashboardPage() {
                             updated[index].authorEn = e.target.value;
                             setConfig({ ...config, quotes: updated });
                           }}
-                          placeholder="— Write author or reference"
+                          placeholder={`— ${config.profile.nameEn || 'Shukhbazz'}`}
                           className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white"
                         />
                       </div>

@@ -113,7 +113,7 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
   const sky = getSkyConfig();
 
   return (
-    <section className="w-full h-screen h-[100dvh] min-h-[100dvh] relative flex flex-col justify-between items-center text-white overflow-hidden p-3 sm:p-8">
+    <section className="w-full h-full relative flex flex-col justify-between items-center text-white overflow-hidden p-3 sm:p-8">
       {/* 1. Dynamic Celestial Sky Background (Changes color based on time of day) */}
       <div
         className={`absolute inset-0 bg-gradient-to-b ${sky.skyGradient} transition-colors duration-1000 pointer-events-none`}
@@ -244,40 +244,41 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
         )}
       </div>
 
-      {/* 7. Bottom Area: Horizontal Triple Calendar Bar (Gregorian + Bangla + Hijri + Live Time) */}
-      <div className="w-full max-w-5xl mx-auto pb-14 sm:pb-3 z-20 px-2 sm:px-0">
-        <div className="w-full bg-[#0e7490]/95 backdrop-blur-md text-white py-2 px-3 sm:px-4 rounded-xl shadow-2xl border border-cyan-400/40 text-[11px] sm:text-sm font-medium">
+      {/* 7. Bottom Area: Prominent Triple Calendar Bar (Gregorian + Bangla + Hijri + Live Time) */}
+      <div className="w-full max-w-5xl mx-auto mb-16 sm:mb-2 z-20 px-2 sm:px-0">
+        <div className="w-full bg-[#0e7490]/95 backdrop-blur-md text-white py-2.5 px-3.5 sm:py-2.5 sm:px-5 rounded-2xl shadow-2xl border border-cyan-400/40">
           {info ? (
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5 sm:gap-2">
-              {/* All 3 Calendars: Gregorian, Bangla & Hijri */}
-              <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-cyan-50">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+              {/* All 3 Calendars: Gregorian, Bangla & Hijri - Larger, clear and readable on mobile */}
+              <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-cyan-50 text-xs sm:text-sm font-medium">
                 {/* 1. Gregorian (ইংরেজি) */}
-                <span className="font-semibold text-white whitespace-nowrap">
+                <span className="font-bold text-white whitespace-nowrap">
                   {lang === 'bn'
                     ? `${info.gregorian.dayNameBn}, ${info.gregorian.bn}`
                     : `${info.gregorian.dayNameEn}, ${info.gregorian.en}`}
                 </span>
-                <span className="opacity-60 text-cyan-200">|</span>
+                <span className="opacity-50 text-cyan-200">|</span>
 
                 {/* 2. Bangla (বাংলা) */}
-                <span className="text-emerald-200 font-medium whitespace-nowrap">
+                <span className="text-emerald-200 font-semibold whitespace-nowrap">
                   {lang === 'bn' ? info.bangla.bn : info.bangla.en}
                 </span>
-                <span className="opacity-60 text-cyan-200">|</span>
+                <span className="opacity-50 text-cyan-200">|</span>
 
                 {/* 3. Hijri (হিজরী) */}
-                <span className="text-amber-200 font-medium whitespace-nowrap">
+                <span className="text-amber-200 font-semibold whitespace-nowrap">
                   {lang === 'bn' ? info.hijri.bn : info.hijri.en}
                 </span>
               </div>
 
-              {/* 4. Live Time (সময়) */}
-              <div className="shrink-0 self-start sm:self-auto flex items-center gap-1 font-mono font-bold text-white bg-black/45 px-2.5 py-0.5 rounded-md border border-white/15 text-[10px] sm:text-xs shadow-inner">
+              {/* 4. Live Time (সময়) - High contrast digital badge with live pulsing dot */}
+              <div className="shrink-0 self-start sm:self-auto flex items-center gap-1.5 font-mono font-bold text-white bg-black/60 px-3 py-1 rounded-lg border border-white/20 text-xs sm:text-xs shadow-inner">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 <span>{lang === 'bn' ? info.time.bn : info.time.en}</span>
               </div>
             </div>
           ) : (
-            <div className="h-5 w-48 bg-white/20 rounded animate-pulse mx-auto" />
+            <div className="h-6 w-56 bg-white/20 rounded animate-pulse mx-auto" />
           )}
         </div>
       </div>

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useLanguage } from '@/context/LanguageContext';
-import { QuoteItem } from '@/lib/types';
+import { QuoteItem, ProfileConfig } from '@/lib/types';
 import { toBnDigits } from '@/lib/calendar';
 import { Quote, ChevronDown, Feather } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -11,14 +11,30 @@ interface QuoteScreenProps {
   quote: QuoteItem;
   index: number;
   total: number;
+  profile?: ProfileConfig;
 }
 
-export default function QuoteScreen({ quote, index, total }: QuoteScreenProps) {
+export default function QuoteScreen({ quote, index, total, profile }: QuoteScreenProps) {
   const { lang } = useLanguage();
 
   const quoteText = lang === 'bn' ? quote.textBn : quote.textEn;
   const rawAuthor = lang === 'bn' ? quote.authorBn : quote.authorEn;
-  const authorText = rawAuthor ? rawAuthor.replace(/শুখবাজ/g, 'সুখবাজ') : '';
+  const currentProfileName = lang === 'bn'
+    ? (profile?.nameBn || 'সুখবাজ').replace(/শুখবাজ/g, 'সুখবাজ')
+    : (profile?.nameEn || 'Shukhbazz');
+
+  let authorText = '';
+  if (rawAuthor) {
+    const cleaned = rawAuthor.replace(/শুখবাজ/g, currentProfileName);
+    if (cleaned.includes('সুখবাজ') && currentProfileName !== 'সুখবাজ') {
+      authorText = cleaned.replace(/সুখবাজ/g, currentProfileName);
+    } else {
+      authorText = cleaned;
+    }
+  } else {
+    authorText = `— ${currentProfileName}`;
+  }
+
   const categoryText = lang === 'bn' ? quote.categoryBn : quote.categoryEn;
 
   // Harmonized picture-based accent color
@@ -30,7 +46,7 @@ export default function QuoteScreen({ quote, index, total }: QuoteScreenProps) {
     : `Thought ${index + 1} of ${total}`;
 
   return (
-    <section className="w-full h-screen h-[100dvh] min-h-[100dvh] relative flex flex-col justify-between items-center bg-slate-950 text-white overflow-hidden p-4 sm:p-12">
+    <section className="w-full h-full relative flex flex-col justify-between items-center bg-slate-950 text-white overflow-hidden p-4 sm:p-12">
       {/* 1. Full-screen Background Picture */}
       <div
         className="absolute inset-0 bg-cover bg-center pointer-events-none transform scale-105 transition-transform duration-1000"
@@ -116,8 +132,8 @@ export default function QuoteScreen({ quote, index, total }: QuoteScreenProps) {
         )}
       </div>
 
-      {/* Bottom Spacer */}
-      <div className="h-6" />
+      {/* Bottom Spacer with Mobile Chat Clearance */}
+      <div className="h-16 sm:h-6" />
     </section>
   );
 }
