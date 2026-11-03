@@ -195,9 +195,9 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent" />
       </div>
 
-      {/* 5. Top Status Badge (Evocative Ocean State) */}
-      <div className="pt-2 sm:pt-4 z-10">
-        <span className="text-[10px] sm:text-[11px] font-mono px-3 py-0.5 sm:px-3.5 sm:py-1 rounded-full bg-black/50 border border-white/10 text-slate-300 backdrop-blur-md shadow-sm">
+      {/* 5. Top Status Badge (Evocative Ocean State - Safe from Mobile Language Button) */}
+      <div className="pt-2 sm:pt-4 z-10 px-14 sm:px-4 text-center">
+        <span className="text-[10px] sm:text-[11px] font-mono px-2.5 py-0.5 sm:px-3.5 sm:py-1 rounded-full bg-black/60 border border-white/10 text-slate-300 backdrop-blur-md shadow-sm truncate max-w-full inline-block">
           {sky.statusIcon} {lang === 'bn' ? sky.statusBn : sky.statusEn}
         </span>
       </div>

@@ -29,20 +29,20 @@ export default function GalleryScreen({ item, index, total }: GalleryScreenProps
     : `Moment ${index + 1} of ${total}`;
 
   return (
-    <section className="w-full h-screen relative flex flex-col justify-between items-center bg-slate-950 text-white overflow-hidden p-4 sm:p-8">
+    <section className="w-full h-screen h-[100dvh] min-h-[100dvh] relative flex flex-col justify-between items-center bg-slate-950 text-white overflow-hidden p-3 sm:p-8">
       {/* Background ambient lighting matching the photo's palette */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full blur-[160px] pointer-events-none"
         style={{ backgroundColor: `${accent}22` }}
       />
 
-      {/* TOP: Headline and Category (হেডলাইনটা ওপরে দেখাবে) */}
+      {/* TOP: Headline and Category (হেডলাইনটা ওপরে দেখাবে - Safe from Mobile Language Button) */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: false }}
         transition={{ duration: 0.7 }}
-        className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center text-center pt-2 space-y-1.5"
+        className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center text-center pt-2 space-y-1.5 pr-14 sm:pr-0"
       >
         <div className="flex items-center justify-between w-full pb-1">
           <div

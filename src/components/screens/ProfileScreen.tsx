@@ -48,7 +48,7 @@ export default function ProfileScreen({ profile, menus, onShopClick }: ProfileSc
   const shopMenu = menus.find((m) => m.id === 'shop');
 
   return (
-    <section className="w-full h-screen relative flex flex-col justify-between items-center bg-slate-950 text-white overflow-hidden p-6 sm:p-10">
+    <section className="w-full h-screen h-[100dvh] min-h-[100dvh] relative flex flex-col justify-between items-center bg-slate-950 text-white overflow-hidden p-3 sm:p-10">
       {/* Background glow */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
 

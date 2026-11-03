@@ -29,7 +29,7 @@ export default function QuoteScreen({ quote, index, total }: QuoteScreenProps) {
     : `Thought ${index + 1} of ${total}`;
 
   return (
-    <section className="w-full h-screen relative flex flex-col justify-between items-center bg-slate-950 text-white overflow-hidden p-6 sm:p-12">
+    <section className="w-full h-screen h-[100dvh] min-h-[100dvh] relative flex flex-col justify-between items-center bg-slate-950 text-white overflow-hidden p-4 sm:p-12">
       {/* 1. Full-screen Background Picture */}
       <div
         className="absolute inset-0 bg-cover bg-center pointer-events-none transform scale-105 transition-transform duration-1000"
@@ -55,8 +55,8 @@ export default function QuoteScreen({ quote, index, total }: QuoteScreenProps) {
         style={{ backgroundColor: `${accent}25` }}
       />
 
-      {/* Top Bar: Category Pill & Index Badge */}
-      <div className="relative z-10 w-full max-w-4xl mx-auto flex items-center justify-between pt-4">
+      {/* Top Bar: Category Pill & Index Badge (pr-16 on mobile avoids language button) */}
+      <div className="relative z-10 w-full max-w-4xl mx-auto flex items-center justify-between pt-2 sm:pt-4 pr-16 sm:pr-0">
         <div className="flex items-center gap-2">
           <span
             className="p-2 rounded-xl backdrop-blur-md"

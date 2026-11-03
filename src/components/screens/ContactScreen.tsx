@@ -197,7 +197,7 @@ export default function ContactScreen({ contacts, profile }: ContactScreenProps)
     'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80';
 
   return (
-    <section className="w-full h-screen relative flex flex-col justify-between items-center bg-[#020617] text-white overflow-hidden p-3 sm:p-6">
+    <section className="w-full h-screen h-[100dvh] min-h-[100dvh] relative flex flex-col justify-between items-center bg-[#020617] text-white overflow-hidden p-3 sm:p-6">
       {/* 0. Deep Galaxy Space Background Layer with Atmospheric Vignette */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -217,13 +217,13 @@ export default function ContactScreen({ contacts, profile }: ContactScreenProps)
         style={{ backgroundColor: hoveredGlow }}
       />
 
-      {/* 2. Top Header (Instructional subtitle removed per user request) */}
+      {/* 2. Top Header (Instructional subtitle removed per user request - Safe from Mobile Language Button) */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: false }}
         transition={{ duration: 0.7 }}
-        className="text-center pt-2 sm:pt-3 z-10"
+        className="text-center pt-2 sm:pt-3 z-10 px-14 sm:px-4"
       >
         <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-cyan-950/80 border border-cyan-500/30 text-cyan-400 text-xs font-semibold mb-1.5 shadow-sm">
           <Sparkles className="w-3.5 h-3.5" />
