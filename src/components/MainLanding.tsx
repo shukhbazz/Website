@@ -328,7 +328,7 @@ export default function MainLanding({ initialConfig }: MainLandingProps) {
       {/* 1. Global Content Protection (Anti-Copy & Anti-Download) */}
       <ContentProtection />
 
-      <div className="fixed inset-0 w-full h-full overflow-hidden bg-slate-950 text-slate-100 selection:bg-cyan-500 selection:text-slate-950 font-sans overscroll-none">
+      <div className="relative w-full h-screen h-[100dvh] min-h-[100dvh] overflow-hidden bg-slate-950 text-slate-100 selection:bg-cyan-500 selection:text-slate-950 font-sans overscroll-none">
         {/* 2. Language Switcher (Fixed at Top-Right Corner) */}
         <LanguageToggle />
 

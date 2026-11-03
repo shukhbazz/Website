@@ -88,7 +88,7 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
           bodyShadow: 'shadow-[0_0_90px_30px_rgba(244,63,94,0.5)]',
           bodyBottom: '21%',
           isMoon: false,
-          statusBn: 'সমুদ্রে গোধূলি ও সূর্যাস্ত',
+          statusBn: 'সমুদে গোধূলি ও সূর্যাস্ত',
           statusEn: 'Twilight Ocean Sunset',
           statusIcon: '🌇'
         };
@@ -113,7 +113,7 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
   const sky = getSkyConfig();
 
   return (
-    <section className="w-full h-full relative flex flex-col justify-between items-center text-white overflow-hidden p-3 sm:p-8 landscape:p-2 landscape:px-6">
+    <section className="w-full h-screen h-[100dvh] min-h-[100dvh] relative flex flex-col justify-between items-center text-white overflow-hidden p-4 sm:p-8">
       {/* 1. Dynamic Celestial Sky Background (Changes color based on time of day) */}
       <div
         className={`absolute inset-0 bg-gradient-to-b ${sky.skyGradient} transition-colors duration-1000 pointer-events-none`}
@@ -143,7 +143,7 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
         {/* Celestial Body: Sun (Day/Dawn/Sunset) or Authentic Radiant Crescent Moon (Night) */}
         {sky.isMoon ? (
           /* Realistic Radiant Crescent Moon (মার্জিত স্নিগ্ধ জ্যোতির্ময় বাঁকা চাঁদ) */
-          <div className="absolute w-14 h-14 sm:w-20 sm:h-20 landscape:w-12 landscape:h-12 transition-all duration-1000 flex items-center justify-center">
+          <div className="absolute w-14 h-14 sm:w-20 sm:h-20 transition-all duration-1000 flex items-center justify-center">
             <svg
               viewBox="0 0 100 100"
               className="w-full h-full drop-shadow-[0_0_24px_rgba(224,242,254,0.9)] filter"
@@ -175,13 +175,13 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
         ) : (
           /* Glowing Sun for Dawn, Day, Sunset */
           <div
-            className={`absolute w-14 h-14 sm:w-24 sm:h-24 landscape:w-12 landscape:h-12 rounded-full ${sky.bodyColor} ${sky.bodyShadow} transition-all duration-1000 flex items-center justify-center`}
+            className={`absolute w-14 h-14 sm:w-24 sm:h-24 rounded-full ${sky.bodyColor} ${sky.bodyShadow} transition-all duration-1000 flex items-center justify-center`}
           />
         )}
       </div>
 
       {/* 4. Realistic Ocean Water & Animated Horizon Waves (সমুদ্রের অপর পাশে দিগন্ত ও জলরাশি) */}
-      <div className="absolute bottom-0 left-0 right-0 h-28 sm:h-56 landscape:h-16 pointer-events-none z-0 overflow-hidden">
+      <div className="absolute bottom-0 left-0 right-0 h-44 sm:h-56 pointer-events-none z-0 overflow-hidden">
         {/* Ocean Surface Gradient Base */}
         <div
           className={`absolute inset-0 bg-gradient-to-b ${sky.oceanGradient} transition-colors duration-1000`}
@@ -230,55 +230,55 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
       </div>
 
       {/* 5. Top Status Badge (Evocative Ocean State - Safe from Mobile Language Button) */}
-      <div className="pt-2 sm:pt-4 landscape:pt-0.5 z-10 px-14 sm:px-4 text-center">
-        <span className="text-[10px] sm:text-[11px] landscape:text-[9px] font-mono px-2.5 py-0.5 sm:px-3.5 sm:py-1 landscape:py-0.5 rounded-full bg-black/60 border border-white/10 text-slate-300 backdrop-blur-md shadow-sm truncate max-w-full inline-block">
+      <div className="pt-2 sm:pt-4 z-10 px-14 sm:px-4 text-center">
+        <span className="text-[10px] sm:text-[11px] font-mono px-3.5 py-1 rounded-full bg-black/60 border border-white/10 text-slate-300 backdrop-blur-md shadow-sm truncate max-w-full inline-block">
           {sky.statusIcon} {lang === 'bn' ? sky.statusBn : sky.statusEn}
         </span>
       </div>
 
-      {/* 6. Center: Bismillah & Quranic Verse with Responsive Proportions */}
-      <div className="max-w-4xl mx-auto my-auto text-center space-y-2 sm:space-y-6 landscape:space-y-1 px-3 sm:px-4 relative z-10">
+      {/* 6. Center: Bismillah & Quranic Verse with Full Majestic Drop Shadows */}
+      <div className="max-w-4xl mx-auto my-auto text-center space-y-6 sm:space-y-7 px-4 relative z-10">
         {/* Bismillah */}
-        <div className="space-y-0.5 sm:space-y-2 landscape:space-y-0">
+        <div className="space-y-2">
           <h1
-            className="text-lg sm:text-4xl md:text-5xl landscape:text-lg landscape:sm:text-xl font-serif text-amber-200 tracking-wider leading-relaxed font-arabic drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]"
+            className="text-2xl sm:text-4xl md:text-5xl font-serif text-amber-200 tracking-wider leading-relaxed font-arabic drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]"
             dir="rtl"
           >
             {islamicHeader.bismillahArabic}
           </h1>
-          <p className="text-[11px] sm:text-base landscape:text-xs text-slate-100 font-light max-w-xl mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] leading-normal">
+          <p className="text-sm sm:text-base text-slate-100 font-light max-w-xl mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] leading-normal">
             {lang === 'bn' ? islamicHeader.bismillahBn : islamicHeader.bismillahEn}
           </p>
         </div>
 
         {/* Divider Ornament */}
-        <div className="w-12 sm:w-24 landscape:w-16 h-[1px] bg-gradient-to-r from-transparent via-amber-300/60 to-transparent mx-auto" />
+        <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-amber-300/60 to-transparent mx-auto" />
 
         {/* Quranic Verse */}
         {islamicHeader.quranArabic && (
-          <div className="space-y-1 sm:space-y-3 landscape:space-y-0.5 pt-0.5">
+          <div className="space-y-3 pt-1">
             <p
-              className="text-base sm:text-3xl landscape:text-base text-emerald-300 font-serif font-arabic leading-relaxed sm:leading-loose landscape:leading-normal tracking-wide drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)]"
+              className="text-xl sm:text-3xl text-emerald-300 font-serif font-arabic leading-relaxed sm:leading-loose tracking-wide drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)]"
               dir="rtl"
             >
               &ldquo;{islamicHeader.quranArabic}&rdquo;
             </p>
-            <p className="text-[11px] sm:text-lg landscape:text-xs text-slate-100 italic max-w-2xl mx-auto leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+            <p className="text-sm sm:text-lg text-slate-100 italic max-w-2xl mx-auto leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
               &ldquo;{lang === 'bn' ? islamicHeader.quranBn : islamicHeader.quranEn}&rdquo;
             </p>
-            <p className="text-[9px] sm:text-sm landscape:text-[9px] text-amber-300 font-mono drop-shadow">
+            <p className="text-xs sm:text-sm text-amber-300 font-mono drop-shadow">
               {lang === 'bn' ? islamicHeader.quranSurahBn : islamicHeader.quranSurahEn}
             </p>
           </div>
         )}
       </div>
 
-      {/* 7. Bottom Area: Triple Calendar & Live Time (Mobile 3-Tier Split + Desktop/Landscape Sleek Single Bar) */}
-      <div className="w-full max-w-5xl mx-auto mb-16 sm:mb-2 landscape:mb-1 z-20 px-2 sm:px-0">
+      {/* 7. Bottom Area: Triple Calendar & Live Time */}
+      <div className="w-full max-w-5xl mx-auto pb-16 sm:pb-4 z-20 px-2 sm:px-0">
         {info ? (
           <>
-            {/* --- MOBILE PORTRAIT VIEW: Clean 3-Tier Split (মোবাইল সাধারণ খাড়া ভিউতে ৩ ভাগে বিন্যাস) --- */}
-            <div className="sm:hidden landscape:hidden w-full bg-[#082f49]/95 backdrop-blur-md rounded-2xl p-3 border border-cyan-400/40 shadow-2xl space-y-2">
+            {/* --- MOBILE VIEW: Clean 3-Tier Split (মোবাইলে ৩ ভাগে স্বয়ংক্রিয়ভাবে সাজানো) --- */}
+            <div className="sm:hidden w-full bg-[#082f49]/95 backdrop-blur-md rounded-2xl p-3 border border-cyan-400/40 shadow-2xl space-y-2">
               {/* ভাগ ১: ইংরেজি ক্যালেন্ডার */}
               <div className="flex items-center justify-between text-xs pb-1.5 border-b border-cyan-500/20">
                 <div className="flex items-center gap-2 text-white font-bold">
@@ -328,9 +328,9 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
               </div>
             </div>
 
-            {/* --- DESKTOP & LANDSCAPE VIEW: Sleek Single Horizontal Bar (ডেক্সটপ ও মোবাইল ল্যান্ডস্কেপে এক লাইনে রাজকীয় বার) --- */}
-            <div className="hidden sm:flex landscape:flex items-center justify-between w-full bg-[#0e7490]/95 backdrop-blur-md text-white py-2 sm:py-2.5 px-3 sm:px-5 rounded-xl sm:rounded-2xl shadow-2xl border border-cyan-400/40 text-xs sm:text-sm">
-              <div className="flex items-center gap-2 sm:gap-3 text-cyan-50 font-medium">
+            {/* --- DESKTOP VIEW: Sleek Single Horizontal Bar (ডেক্সটপে এক লাইনে রাজকীয় বার) --- */}
+            <div className="hidden sm:flex items-center justify-between w-full bg-[#0e7490]/95 backdrop-blur-md text-white py-2.5 px-5 rounded-2xl shadow-2xl border border-cyan-400/40 text-sm font-medium">
+              <div className="flex items-center gap-3 text-cyan-50">
                 {/* 1. Gregorian (ইংরেজি) */}
                 <span className="font-bold text-white whitespace-nowrap">
                   {lang === 'bn'
@@ -352,7 +352,7 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
               </div>
 
               {/* 4. Live Time (সময়) */}
-              <div className="shrink-0 flex items-center gap-1.5 font-mono font-bold text-white bg-black/60 px-2.5 sm:px-3.5 py-0.5 sm:py-1 rounded-lg border border-white/20 text-xs shadow-inner">
+              <div className="shrink-0 flex items-center gap-1.5 font-mono font-bold text-white bg-black/60 px-3.5 py-1 rounded-lg border border-white/20 text-xs shadow-inner">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 <span>{lang === 'bn' ? info.time.bn : info.time.en}</span>
               </div>
