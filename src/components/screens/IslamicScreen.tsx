@@ -116,7 +116,7 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
   const sky = getSkyConfig();
 
   return (
-    <section className="w-full h-screen h-[100dvh] min-h-[100dvh] relative flex flex-col justify-between items-center text-white overflow-hidden p-4 sm:p-8">
+    <section className="w-full h-screen h-[100dvh] min-h-[100dvh] relative flex flex-col justify-between items-center text-white overflow-hidden px-3 pt-2 pb-2 sm:p-8">
       {/* 1. Dynamic Celestial Sky Background (Changes color based on time of day) */}
       <div
         className={`absolute inset-0 bg-gradient-to-b ${sky.skyGradient} transition-colors duration-1000 pointer-events-none`}
@@ -240,16 +240,16 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
       </div>
 
       {/* 6. Center: Bismillah & Quranic Verse with Full Majestic Drop Shadows */}
-      <div className="max-w-4xl mx-auto my-auto text-center space-y-6 sm:space-y-7 px-4 relative z-10">
+      <div className="max-w-4xl mx-auto my-auto text-center space-y-3.5 sm:space-y-7 px-4 relative z-10">
         {/* Bismillah */}
-        <div className="space-y-2">
+        <div className="space-y-1.5 sm:space-y-2">
           <h1
             className="text-2xl sm:text-4xl md:text-5xl font-serif text-amber-200 tracking-wider leading-relaxed font-arabic drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]"
             dir="rtl"
           >
             {islamicHeader.bismillahArabic}
           </h1>
-          <p className="text-sm sm:text-base text-slate-100 font-light max-w-xl mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] leading-normal">
+          <p className="text-xs sm:text-base text-slate-100 font-light max-w-xl mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] leading-normal">
             {lang === 'bn' ? islamicHeader.bismillahBn : islamicHeader.bismillahEn}
           </p>
         </div>
@@ -259,17 +259,17 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
 
         {/* Quranic Verse */}
         {islamicHeader.quranArabic && (
-          <div className="space-y-3 pt-1">
+          <div className="space-y-2 sm:space-y-3 pt-0.5 sm:pt-1">
             <p
               className="text-xl sm:text-3xl text-emerald-300 font-serif font-arabic leading-relaxed sm:leading-loose tracking-wide drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)]"
               dir="rtl"
             >
               &ldquo;{islamicHeader.quranArabic}&rdquo;
             </p>
-            <p className="text-sm sm:text-lg text-slate-100 italic max-w-2xl mx-auto leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+            <p className="text-xs sm:text-lg text-slate-100 italic max-w-2xl mx-auto leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
               &ldquo;{lang === 'bn' ? islamicHeader.quranBn : islamicHeader.quranEn}&rdquo;
             </p>
-            <p className="text-xs sm:text-sm text-amber-300 font-mono drop-shadow">
+            <p className="text-[11px] sm:text-sm text-amber-300 font-mono drop-shadow">
               {lang === 'bn' ? islamicHeader.quranSurahBn : islamicHeader.quranSurahEn}
             </p>
           </div>
@@ -277,13 +277,13 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
       </div>
 
       {/* 7. Bottom Area: Triple Calendar & Live Time */}
-      <div className="w-full max-w-5xl mx-auto pb-3 sm:pb-4 z-20 px-2 sm:px-0">
+      <div className="w-full max-w-5xl mx-auto pb-1.5 sm:pb-4 z-20 px-1 sm:px-0">
         {info ? (
           <>
             {/* --- MOBILE VIEW: Clean 3-Tier Split (মোবাইলে ৩ ভাগে স্বয়ংক্রিয়ভাবে সাজানো) --- */}
-            <div className="sm:hidden w-full bg-[#082f49]/95 backdrop-blur-md rounded-2xl p-3 border border-cyan-400/40 shadow-2xl space-y-2">
+            <div className="sm:hidden w-full bg-[#082f49]/95 backdrop-blur-md rounded-2xl p-2.5 border border-cyan-400/40 shadow-2xl space-y-1.5">
               {/* ভাগ ১: ইংরেজি ক্যালেন্ডার */}
-              <div className="flex items-center justify-between text-xs pb-1.5 border-b border-cyan-500/20">
+              <div className="flex items-center justify-between text-xs pb-1 border-b border-cyan-500/20">
                 <div className="flex items-center gap-2 text-white font-bold">
                   <span className="text-sm">🗓️</span>
                   <span>
@@ -298,7 +298,7 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
               </div>
 
               {/* ভাগ ২: ঐতিহ্যবাহী বাংলা ও হিজরী সন */}
-              <div className="flex flex-col gap-1 text-[12px] font-medium py-0.5">
+              <div className="flex flex-col gap-0.5 text-[11.5px] font-medium py-0.5">
                 <div className="flex items-center gap-1.5 text-emerald-200">
                   <span className="text-xs">🌾</span>
                   <span>{lang === 'bn' ? info.bangla.bn : info.bangla.en}</span>
@@ -315,7 +315,7 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
               </div>
 
               {/* ভাগ ৩: লাইভ সময় ও প্রহর */}
-              <div className="pt-1.5 border-t border-cyan-500/20 flex items-center justify-between">
+              <div className="pt-1 border-t border-cyan-500/20 flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -325,7 +325,7 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
                     {lang === 'bn' ? 'বর্তমান সময়:' : 'Current Time:'}
                   </span>
                 </div>
-                <div className="font-mono font-bold text-xs text-white bg-black/60 px-3 py-1 rounded-lg border border-cyan-400/30 shadow-inner" suppressHydrationWarning>
+                <div className="font-mono font-bold text-[11px] text-white bg-black/60 px-2.5 py-0.5 rounded-lg border border-cyan-400/30 shadow-inner" suppressHydrationWarning>
                   <span>{lang === 'bn' ? info.time.bn : info.time.en}</span>
                 </div>
               </div>
