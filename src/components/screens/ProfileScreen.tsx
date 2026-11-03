@@ -56,13 +56,7 @@ export default function ProfileScreen({ profile, menus, onShopClick }: ProfileSc
       <div className="h-4" />
 
       {/* Center: Profile Logo, Name, Title, Bio, Menus */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: false }}
-        transition={{ duration: 0.8 }}
-        className="max-w-3xl mx-auto my-auto flex flex-col items-center text-center space-y-5 px-4"
-      >
+      <div className="max-w-3xl mx-auto my-auto flex flex-col items-center text-center space-y-4 sm:space-y-5 px-3 sm:px-4">
         {/* Animated Personal Logo / Shuffled DP */}
         <motion.div
           animate={{
@@ -90,10 +84,10 @@ export default function ProfileScreen({ profile, menus, onShopClick }: ProfileSc
           </div>
         </motion.div>
 
-        {/* Name: শুকবাজ / Shukhbazz */}
+        {/* Name: সুখবাজ / Shukhbazz */}
         <div className="space-y-1">
           <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            {lang === 'bn' ? profile.nameBn : profile.nameEn}
+            {lang === 'bn' ? (profile.nameBn || 'সুখবাজ') : (profile.nameEn || 'Shukhbazz')}
           </h2>
           <p className="text-sm sm:text-base font-medium text-cyan-400 flex items-center justify-center gap-1.5 pt-1">
             <Sparkles className="w-4 h-4 text-cyan-400" />
@@ -157,7 +151,7 @@ export default function ProfileScreen({ profile, menus, onShopClick }: ProfileSc
             </span>
           </button>
         </div>
-      </motion.div>
+      </div>
 
       {/* Bottom Spacer */}
       <div className="h-6" />

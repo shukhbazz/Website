@@ -35,7 +35,7 @@ export default function Navbar({
     }
   };
 
-  const displayName = brandName || (lang === 'bn' ? (nameBn || 'শুখবাজ') : (nameEn || 'Shukhbazz'));
+  const displayName = lang === 'bn' ? (nameBn || brandName || 'সুখবাজ') : (nameEn || brandName || 'Shukhbazz');
 
   return (
     <nav className="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-xl border-b border-slate-800 shadow-lg">

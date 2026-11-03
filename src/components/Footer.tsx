@@ -49,7 +49,7 @@ export default function Footer({ profile, contacts }: FooterProps) {
     return lang === 'bn' ? toBnDigits(num) : String(num);
   };
 
-  const brandName = profile.brandName || 'Shukhbazz';
+  const brandName = lang === 'bn' ? (profile.nameBn || profile.brandName || 'সুখবাজ') : (profile.nameEn || profile.brandName || 'Shukhbazz');
 
   const cleanPhone = (phone: string) => phone.replace(/[^0-9+]/g, '');
 

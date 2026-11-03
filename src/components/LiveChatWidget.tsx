@@ -113,7 +113,7 @@ export default function LiveChatWidget({
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-white">
-                    {profile.brandName || (lang === 'bn' ? profile.nameBn : profile.nameEn)}
+                    {(lang === 'bn' ? profile.nameBn : profile.nameEn) || profile.brandName || (lang === 'bn' ? 'সুখবাজ' : 'Shukhbazz')}
                   </h4>
                   <p className="text-[11px] text-emerald-400 flex items-center gap-1 font-medium">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />

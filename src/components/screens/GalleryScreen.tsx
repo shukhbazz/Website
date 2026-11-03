@@ -37,16 +37,10 @@ export default function GalleryScreen({ item, index, total }: GalleryScreenProps
       />
 
       {/* TOP: Headline and Category (হেডলাইনটা ওপরে দেখাবে - Safe from Mobile Language Button) */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false }}
-        transition={{ duration: 0.7 }}
-        className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center text-center pt-2 space-y-1.5 pr-14 sm:pr-0"
-      >
+      <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center text-center pt-2 space-y-1.5 pr-14 sm:pr-0">
         <div className="flex items-center justify-between w-full pb-1">
           <div
-            className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[11px] font-semibold backdrop-blur-md"
+            className="inline-flex items-center gap-1.5 px-3 py-0.5 sm:px-3.5 sm:py-1 rounded-full text-[11px] font-semibold backdrop-blur-md"
             style={{
               backgroundColor: `${accent}18`,
               border: `1px solid ${accent}40`,
@@ -57,27 +51,21 @@ export default function GalleryScreen({ item, index, total }: GalleryScreenProps
             <span>{category || t('galleryTitle')}</span>
           </div>
 
-          <span className="text-xs px-3.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-400 font-mono">
+          <span className="text-[11px] sm:text-xs px-3 py-0.5 sm:px-3.5 sm:py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-400 font-mono">
             {pageNumStr}
           </span>
         </div>
 
         {/* The Main Headline */}
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+        <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
           {title}
         </h2>
-      </motion.div>
+      </div>
 
       {/* CENTER: Full Image Showcase (ফুল আকারে দেখাবে with Picture-Harmonized Border Glow) */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: false }}
-        transition={{ duration: 0.8 }}
-        className="relative z-10 w-full max-w-4xl my-auto flex items-center justify-center"
-      >
+      <div className="relative z-10 w-full max-w-4xl my-auto flex items-center justify-center px-1 sm:px-0">
         <div
-          className="relative w-full max-h-[50vh] sm:max-h-[55vh] aspect-video rounded-3xl overflow-hidden bg-slate-900 shadow-2xl group transition-all duration-500"
+          className="relative w-full max-h-[38vh] sm:max-h-[52vh] aspect-video rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-900 shadow-2xl group transition-all duration-500"
           style={{
             border: `2px solid ${accent}50`,
             boxShadow: `0 20px 50px -10px ${accent}25`
@@ -94,30 +82,22 @@ export default function GalleryScreen({ item, index, total }: GalleryScreenProps
           <div className="absolute inset-0 z-10 select-none" onContextMenu={(e) => e.preventDefault()} />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent pointer-events-none" />
         </div>
-      </motion.div>
+      </div>
 
-      {/* BOTTOM: Description Details + Scroll Hint (সেটার বিস্তারিত গুলো নিচে দেখাবে) */}
-      <div className="relative z-10 w-full max-w-2xl mx-auto text-center space-y-3 pb-2">
+      {/* BOTTOM: Description Details + Safe Distance from Floating Chat Button on Mobile */}
+      <div className="relative z-10 w-full max-w-2xl mx-auto text-center space-y-2 pb-16 sm:pb-3 px-3 sm:px-0">
         {desc && (
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-xs sm:text-sm text-slate-200 leading-relaxed p-3.5 rounded-2xl backdrop-blur-md shadow-md"
+          <p
+            className="text-xs sm:text-sm text-slate-200 leading-relaxed p-2.5 sm:p-3.5 rounded-2xl backdrop-blur-md shadow-md"
             style={{
-              backgroundColor: 'rgba(15, 23, 42, 0.75)',
+              backgroundColor: 'rgba(15, 23, 42, 0.85)',
               border: `1px solid ${accent}30`
             }}
           >
             {desc}
-          </motion.p>
+          </p>
         )}
-
       </div>
-
-      {/* Bottom Spacer */}
-      <div className="h-4" />
     </section>
   );
 }

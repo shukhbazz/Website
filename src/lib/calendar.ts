@@ -255,20 +255,54 @@ export function getHijriDate(date: Date) {
   }
 }
 
-// Get Bengali Time Period Description
-export function getBengaliTimePeriod(hours: number): { periodBn: string; periodEn: string } {
-  let periodBn = 'রাত';
-  let periodEn = hours >= 12 ? 'PM' : 'AM';
+// Get Bengali Time Period Description with accurate seasonal twilight/sunset calculation for Bangladesh
+export function getBengaliTimePeriod(dateOrHour: Date | number = new Date()): { periodBn: string; periodEn: string } {
+  let hours: number;
+  let minutes = 0;
+  let month = 10; // default November
 
-  if (hours >= 4 && hours < 6) {
+  if (typeof dateOrHour === 'number') {
+    hours = dateOrHour;
+    month = new Date().getMonth();
+    minutes = new Date().getMinutes();
+  } else {
+    hours = dateOrHour.getHours();
+    minutes = dateOrHour.getMinutes();
+    month = dateOrHour.getMonth();
+  }
+
+  const timeInMinutes = hours * 60 + minutes;
+
+  // Determine sunset time in Bangladesh:
+  // Winter (Mid-October to February: months 9, 10, 11, 0, 1):
+  // Sunset occurs early between 5:10 PM and 5:25 PM (17:10 - 17:25).
+  // Maghrib starts at ~5:15 PM, bringing 'সন্ধ্যা' (Evening)!
+  // Summer (April to August: months 3 to 7): Sunset is ~6:30 PM (18:30).
+  // Spring/Autumn: Sunset is ~5:50 PM (17:50).
+  let sunsetMinute = 18 * 60; // 6:00 PM default
+  if (month >= 9 || month <= 1) {
+    sunsetMinute = 17 * 60 + 10; // 5:10 PM in winter
+  } else if (month >= 3 && month <= 7) {
+    sunsetMinute = 18 * 60 + 30; // 6:30 PM in summer
+  } else {
+    sunsetMinute = 17 * 60 + 50; // 5:50 PM
+  }
+
+  // Evening (সন্ধ্যা) continues until Esha / nightfall (~1 hour 45 minutes after sunset)
+  const nightfallMinute = sunsetMinute + 105;
+
+  let periodBn = 'রাত';
+  const periodEn = hours >= 12 ? 'PM' : 'AM';
+
+  if (timeInMinutes >= 4 * 60 && timeInMinutes < 6 * 60) {
     periodBn = 'ভোর';
-  } else if (hours >= 6 && hours < 12) {
+  } else if (timeInMinutes >= 6 * 60 && timeInMinutes < 12 * 60) {
     periodBn = 'সকাল';
-  } else if (hours >= 12 && hours < 16) {
+  } else if (timeInMinutes >= 12 * 60 && timeInMinutes < 15 * 60 + 30) {
     periodBn = 'দুপুর';
-  } else if (hours >= 16 && hours < 18) {
+  } else if (timeInMinutes >= 15 * 60 + 30 && timeInMinutes < sunsetMinute) {
     periodBn = 'বিকাল';
-  } else if (hours >= 18 && hours < 20) {
+  } else if (timeInMinutes >= sunsetMinute && timeInMinutes < nightfallMinute) {
     periodBn = 'সন্ধ্যা';
   } else {
     periodBn = 'রাত';
@@ -301,7 +335,7 @@ export function getTripleCalendarInfo(date: Date = new Date()): TripleCalendarIn
   const seconds = date.getSeconds();
 
   const hours12 = hours % 12 || 12;
-  const { periodBn, periodEn } = getBengaliTimePeriod(hours);
+  const { periodBn, periodEn } = getBengaliTimePeriod(date);
 
   const pad = (n: number) => String(n).padStart(2, '0');
 

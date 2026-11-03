@@ -191,7 +191,7 @@ export default function AdminDashboardPage() {
       id: `q_${Date.now()}`,
       textBn: 'নতুন ভাবনার বাণী এখানে লিখুন...',
       textEn: 'Write your reflective thought here...',
-      authorBn: '— শুখবাজ',
+      authorBn: '— সুখবাজ',
       authorEn: '— Shukhbazz',
       categoryBn: 'চিন্তাভাবনা',
       categoryEn: 'Thoughts',
@@ -312,8 +312,8 @@ export default function AdminDashboardPage() {
           </div>
           <div>
             <h2 className="text-sm font-bold text-white tracking-tight">অ্যাডমিন সেন্টার</h2>
-            <p className="text-[11px] text-cyan-400 font-mono">
-              {config.profile.brandName || 'Shukhbazz'}
+            <p className="text-[11px] text-cyan-400 font-medium">
+              {config.profile.nameBn || config.profile.brandName || 'সুখবাজ'}
             </p>
           </div>
         </div>
@@ -927,25 +927,37 @@ export default function AdminDashboardPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">নাম (বাংলা)</label>
+                  <label className="block text-xs font-semibold text-cyan-300 mb-1">
+                    আপনার নাম / ব্র্যান্ড নাম (বাংলা) — যেমন: সুখবাজ
+                  </label>
+                  <p className="text-[11px] text-slate-400 mb-1.5">
+                    বাংলা ভাষায় ওয়েবসাইট, চ্যাটবক্স ও ড্যাশবোর্ডে সর্বত্র এই নাম প্রদর্শিত হবে
+                  </p>
                   <input
                     type="text"
                     value={config.profile.nameBn}
                     onChange={(e) =>
                       setConfig({ ...config, profile: { ...config.profile, nameBn: e.target.value } })
                     }
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white"
+                    placeholder="সুখবাজ"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white font-medium"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">Name (English)</label>
+                  <label className="block text-xs font-semibold text-indigo-300 mb-1">
+                    Name / Brand Name (English) — e.g. Shukhbazz
+                  </label>
+                  <p className="text-[11px] text-slate-400 mb-1.5">
+                    Used across headers and English view of the website
+                  </p>
                   <input
                     type="text"
                     value={config.profile.nameEn}
                     onChange={(e) =>
-                      setConfig({ ...config, profile: { ...config.profile, nameEn: e.target.value } })
+                      setConfig({ ...config, profile: { ...config.profile, nameEn: e.target.value, brandName: e.target.value } })
                     }
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white"
+                    placeholder="Shukhbazz"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white font-medium"
                   />
                 </div>
               </div>
@@ -1130,6 +1142,73 @@ export default function AdminDashboardPage() {
                             updated[index].textEn = e.target.value;
                             setConfig({ ...config, quotes: updated });
                           }}
+                          className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Author / Reference and Category */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[11px] text-cyan-400 font-medium mb-1">
+                          বক্তা / রেফারেন্স (বাংলা) — যেমন: — সক্রেটিস
+                        </label>
+                        <input
+                          type="text"
+                          value={q.authorBn || ''}
+                          onChange={(e) => {
+                            const updated = [...config.quotes];
+                            updated[index].authorBn = e.target.value;
+                            setConfig({ ...config, quotes: updated });
+                          }}
+                          placeholder="— বক্তা বা রেফারেন্স লিখুন"
+                          className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] text-indigo-400 font-medium mb-1">
+                          Author / Reference (English) — e.g. — Socrates
+                        </label>
+                        <input
+                          type="text"
+                          value={q.authorEn || ''}
+                          onChange={(e) => {
+                            const updated = [...config.quotes];
+                            updated[index].authorEn = e.target.value;
+                            setConfig({ ...config, quotes: updated });
+                          }}
+                          placeholder="— Write author or reference"
+                          className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[11px] text-slate-400 mb-1">ক্যাটাগরি / বিষয় (বাংলা)</label>
+                        <input
+                          type="text"
+                          value={q.categoryBn || ''}
+                          onChange={(e) => {
+                            const updated = [...config.quotes];
+                            updated[index].categoryBn = e.target.value;
+                            setConfig({ ...config, quotes: updated });
+                          }}
+                          placeholder="জীবনদর্শন, অনুপ্রেরণা..."
+                          className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] text-slate-400 mb-1">Category (English)</label>
+                        <input
+                          type="text"
+                          value={q.categoryEn || ''}
+                          onChange={(e) => {
+                            const updated = [...config.quotes];
+                            updated[index].categoryEn = e.target.value;
+                            setConfig({ ...config, quotes: updated });
+                          }}
+                          placeholder="Philosophy, Inspiration..."
                           className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white"
                         />
                       </div>

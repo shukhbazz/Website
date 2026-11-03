@@ -89,13 +89,7 @@ export default function QuoteScreen({ quote, index, total }: QuoteScreenProps) {
       </div>
 
       {/* Center: The Large Animated Quote Card with Picture-Based Accent */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: false }}
-        transition={{ duration: 0.8 }}
-        className="relative z-10 max-w-3xl mx-auto my-auto text-center space-y-6 px-4"
-      >
+      <div className="relative z-10 max-w-3xl mx-auto my-auto text-center space-y-4 sm:space-y-6 px-4">
         <div
           className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto shadow-2xl backdrop-blur-md"
           style={{
@@ -119,7 +113,7 @@ export default function QuoteScreen({ quote, index, total }: QuoteScreenProps) {
             {authorText}
           </p>
         )}
-      </motion.div>
+      </div>
 
       {/* Bottom Spacer */}
       <div className="h-6" />

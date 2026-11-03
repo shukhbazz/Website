@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'শুখবাজ | Shukhbazz - Official Landing & Digital Space',
+  title: 'সুখবাজ | Shukhbazz - Official Landing & Digital Space',
   description: 'Official personal landing page, portfolio hub, blogs, and contact portal.',
   icons: {
     icon: [

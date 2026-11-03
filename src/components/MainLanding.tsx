@@ -178,10 +178,10 @@ export default function MainLanding({ initialConfig }: MainLandingProps) {
       const deltaY = touchStartYRef.current - currentY;
       const deltaX = Math.abs(touchStartX - currentX);
 
-      // Trigger smoothly as soon as swipe exceeds 35px vertically
-      if (Math.abs(deltaY) > 35 && Math.abs(deltaY) > deltaX * 1.2) {
+      // Trigger smoothly as soon as swipe exceeds 45px vertically and is primarily vertical
+      if (Math.abs(deltaY) > 45 && Math.abs(deltaY) > deltaX * 1.3) {
         const now = Date.now();
-        if (now - lastTriggerTimeRef.current < 550) return;
+        if (now - lastTriggerTimeRef.current < 700) return;
 
         lastTriggerTimeRef.current = now;
         isTransitioningRef.current = true;
@@ -195,7 +195,7 @@ export default function MainLanding({ initialConfig }: MainLandingProps) {
 
         setTimeout(() => {
           isTransitioningRef.current = false;
-        }, 550);
+        }, 700);
       }
     };
 
@@ -208,9 +208,9 @@ export default function MainLanding({ initialConfig }: MainLandingProps) {
       const touchEndY = e.changedTouches[0].clientY;
       const diff = touchStartYRef.current - touchEndY;
 
-      if (Math.abs(diff) > 25) {
+      if (Math.abs(diff) > 35) {
         const now = Date.now();
-        if (now - lastTriggerTimeRef.current < 550) return;
+        if (now - lastTriggerTimeRef.current < 700) return;
         lastTriggerTimeRef.current = now;
         isTransitioningRef.current = true;
 
@@ -222,7 +222,7 @@ export default function MainLanding({ initialConfig }: MainLandingProps) {
 
         setTimeout(() => {
           isTransitioningRef.current = false;
-        }, 550);
+        }, 700);
       }
     };
 
@@ -246,7 +246,7 @@ export default function MainLanding({ initialConfig }: MainLandingProps) {
   const slideVariants = {
     enter: (dir: number) => ({
       y: dir > 0 ? '100%' : '-100%',
-      opacity: 0.6,
+      opacity: 1,
       zIndex: 10,
     }),
     center: {
@@ -254,16 +254,16 @@ export default function MainLanding({ initialConfig }: MainLandingProps) {
       opacity: 1,
       zIndex: 10,
       transition: {
-        y: { type: 'spring' as const, stiffness: 260, damping: 28 },
-        opacity: { duration: 0.35, ease: 'easeOut' as const },
+        y: { duration: 0.55, ease: [0.25, 1, 0.5, 1] as const },
+        opacity: { duration: 0.25 },
       }
     },
     exit: (dir: number) => ({
-      y: dir > 0 ? '-35%' : '35%',
+      y: dir > 0 ? '-100%' : '100%',
       opacity: 0,
       zIndex: 0,
       transition: {
-        y: { duration: 0.45, ease: [0.22, 1, 0.36, 1] as const },
+        y: { duration: 0.55, ease: [0.25, 1, 0.5, 1] as const },
         opacity: { duration: 0.3 }
       }
     })

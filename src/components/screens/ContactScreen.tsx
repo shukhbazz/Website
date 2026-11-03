@@ -218,13 +218,7 @@ export default function ContactScreen({ contacts, profile }: ContactScreenProps)
       />
 
       {/* 2. Top Header (Instructional subtitle removed per user request - Safe from Mobile Language Button) */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false }}
-        transition={{ duration: 0.7 }}
-        className="text-center pt-2 sm:pt-3 z-10 px-14 sm:px-4"
-      >
+      <div className="text-center pt-2 sm:pt-3 z-10 px-14 sm:px-4">
         <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-cyan-950/80 border border-cyan-500/30 text-cyan-400 text-xs font-semibold mb-1.5 shadow-sm">
           <Sparkles className="w-3.5 h-3.5" />
           <span>{lang === 'bn' ? 'কানেকশন হাব ও সোশ্যাল গ্যালাক্সি' : 'Connection Hub & Orbit'}</span>
@@ -232,7 +226,7 @@ export default function ContactScreen({ contacts, profile }: ContactScreenProps)
         <h2 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight drop-shadow-md">
           {lang === 'bn' ? 'সোশ্যাল মিডিয়া ও যোগাযোগের মাধ্যম' : 'Social Media & Connections'}
         </h2>
-      </motion.div>
+      </div>
 
       {/* 3. CENTERPIECE: 3D Celestial Orbit Constellation Hub (Sleek, Compact, Zero Overlap) */}
       <div className="relative w-full max-w-2xl my-auto flex items-center justify-center h-[280px] sm:h-[340px] select-none z-10">
@@ -290,7 +284,7 @@ export default function ContactScreen({ contacts, profile }: ContactScreenProps)
           />
           {/* Subtle Live Status Indicator */}
           <span className="absolute -bottom-2.5 px-2 py-0.5 rounded-full bg-slate-950 text-[9px] sm:text-[10px] text-cyan-300 font-mono border border-cyan-400/50 shadow whitespace-nowrap">
-            {profile.brandName || 'Shukhbazz'}
+            {(lang === 'bn' ? profile.nameBn : profile.nameEn) || profile.brandName || (lang === 'bn' ? 'সুখবাজ' : 'Shukhbazz')}
           </span>
         </motion.div>
 

@@ -24,13 +24,18 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
 
       const hour = now.getHours();
       const minute = now.getMinutes();
+      const month = now.getMonth();
       const timeInDecimal = hour + minute / 60;
 
-      if (timeInDecimal >= 5.0 && timeInDecimal < 7.0) {
+      // Seasonal sunset calculation for Bangladesh
+      const sunsetStart = (month >= 9 || month <= 1) ? 17.15 : 18.0;
+      const nightStart = sunsetStart + 1.5;
+
+      if (timeInDecimal >= 5.0 && timeInDecimal < 6.8) {
         setTimeState('dawn');
-      } else if (timeInDecimal >= 7.0 && timeInDecimal < 16.5) {
+      } else if (timeInDecimal >= 6.8 && timeInDecimal < (sunsetStart - 0.4)) {
         setTimeState('day');
-      } else if (timeInDecimal >= 16.5 && timeInDecimal < 18.5) {
+      } else if (timeInDecimal >= (sunsetStart - 0.4) && timeInDecimal < nightStart) {
         setTimeState('sunset');
       } else {
         setTimeState('night');
@@ -147,7 +152,7 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
       </div>
 
       {/* 4. Realistic Ocean Water & Animated Horizon Waves (সমুদ্রের অপর পাশে দিগন্ত ও জলরাশি) */}
-      <div className="absolute bottom-0 left-0 right-0 h-36 sm:h-56 pointer-events-none z-0 overflow-hidden">
+      <div className="absolute bottom-0 left-0 right-0 h-28 sm:h-56 pointer-events-none z-0 overflow-hidden">
         {/* Ocean Surface Gradient Base */}
         <div
           className={`absolute inset-0 bg-gradient-to-b ${sky.oceanGradient} transition-colors duration-1000`}
@@ -169,7 +174,7 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
 
         {/* Animated Ocean Wave SVG Layer 1 */}
         <svg
-          className="absolute top-0 w-[200%] h-10 sm:h-12 text-slate-900/40 animate-[wave_12s_ease-in-out_infinite_alternate]"
+          className="absolute top-0 w-[200%] h-8 sm:h-12 text-slate-900/40 animate-[wave_12s_ease-in-out_infinite_alternate]"
           viewBox="0 0 1200 120"
           preserveAspectRatio="none"
         >
@@ -181,7 +186,7 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
 
         {/* Animated Ocean Wave SVG Layer 2 */}
         <svg
-          className="absolute top-3 sm:top-4 w-[200%] h-12 sm:h-16 text-cyan-950/45 animate-[wave_8s_ease-in-out_infinite_alternate-reverse]"
+          className="absolute top-2 sm:top-4 w-[200%] h-10 sm:h-16 text-cyan-950/45 animate-[wave_8s_ease-in-out_infinite_alternate-reverse]"
           viewBox="0 0 1200 120"
           preserveAspectRatio="none"
         >
@@ -203,71 +208,61 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
       </div>
 
       {/* 6. Center: Bismillah & Quranic Verse with Responsive Proportions */}
-      <motion.div
-        initial={{ opacity: 0, y: 15 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false }}
-        transition={{ duration: 0.7 }}
-        className="max-w-4xl mx-auto my-auto text-center space-y-3 sm:space-y-6 px-3 sm:px-4 relative z-10"
-      >
+      <div className="max-w-4xl mx-auto my-auto text-center space-y-2 sm:space-y-6 px-3 sm:px-4 relative z-10">
         {/* Bismillah */}
-        <div className="space-y-1 sm:space-y-2">
+        <div className="space-y-0.5 sm:space-y-2">
           <h1
-            className="text-xl sm:text-4xl md:text-5xl font-serif text-amber-200 tracking-wider leading-relaxed font-arabic drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]"
+            className="text-lg sm:text-4xl md:text-5xl font-serif text-amber-200 tracking-wider leading-relaxed font-arabic drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]"
             dir="rtl"
           >
             {islamicHeader.bismillahArabic}
           </h1>
-          <p className="text-xs sm:text-base text-slate-100 font-light max-w-xl mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] leading-normal">
+          <p className="text-[11px] sm:text-base text-slate-100 font-light max-w-xl mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] leading-normal">
             {lang === 'bn' ? islamicHeader.bismillahBn : islamicHeader.bismillahEn}
           </p>
         </div>
 
         {/* Divider Ornament */}
-        <div className="w-16 sm:w-24 h-[1px] bg-gradient-to-r from-transparent via-amber-300/60 to-transparent mx-auto" />
+        <div className="w-12 sm:w-24 h-[1px] bg-gradient-to-r from-transparent via-amber-300/60 to-transparent mx-auto" />
 
         {/* Quranic Verse */}
         {islamicHeader.quranArabic && (
-          <div className="space-y-1.5 sm:space-y-3 pt-0.5 sm:pt-1">
+          <div className="space-y-1 sm:space-y-3 pt-0.5">
             <p
-              className="text-lg sm:text-3xl text-emerald-300 font-serif font-arabic leading-relaxed sm:leading-loose tracking-wide drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)]"
+              className="text-base sm:text-3xl text-emerald-300 font-serif font-arabic leading-relaxed sm:leading-loose tracking-wide drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)]"
               dir="rtl"
             >
               &ldquo;{islamicHeader.quranArabic}&rdquo;
             </p>
-            <p className="text-xs sm:text-lg text-slate-100 italic max-w-2xl mx-auto leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+            <p className="text-[11px] sm:text-lg text-slate-100 italic max-w-2xl mx-auto leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
               &ldquo;{lang === 'bn' ? islamicHeader.quranBn : islamicHeader.quranEn}&rdquo;
             </p>
-            <p className="text-[10px] sm:text-sm text-amber-300 font-mono drop-shadow">
+            <p className="text-[9px] sm:text-sm text-amber-300 font-mono drop-shadow">
               {lang === 'bn' ? islamicHeader.quranSurahBn : islamicHeader.quranSurahEn}
             </p>
           </div>
         )}
-      </motion.div>
+      </div>
 
-      {/* 7. Bottom Area: Horizontal Triple Calendar Bar (Compact, Crop-Free on Mobile) */}
-      <div className="w-full max-w-5xl mx-auto pb-2 sm:pb-4 z-10 px-1 sm:px-0">
-        <div className="w-full bg-[#0e7490]/90 backdrop-blur-md text-white py-1.5 sm:py-2 px-3 sm:px-4 rounded-xl shadow-2xl border border-cyan-400/30 text-[11px] sm:text-sm font-medium">
-          <div className="flex items-center justify-between gap-2 text-left">
+      {/* 7. Bottom Area: Horizontal Triple Calendar Bar (Compact, Crop-Free, Chat-Safe on Mobile) */}
+      <div className="w-full max-w-5xl mx-auto pb-14 sm:pb-3 z-20 px-2 sm:px-0">
+        <div className="w-full bg-[#0e7490]/90 backdrop-blur-md text-white py-1.5 sm:py-2 px-3 sm:px-4 rounded-xl shadow-2xl border border-cyan-400/30 text-[10px] sm:text-sm font-medium">
+          <div className="flex items-center justify-between gap-1.5 sm:gap-2 text-left">
             {info ? (
               <>
-                <div className="flex items-center gap-1.5 sm:gap-3 text-cyan-50 truncate">
+                <div className="flex items-center gap-1 sm:gap-3 text-cyan-50 truncate">
                   <span className="font-semibold truncate">
                     {lang === 'bn'
                       ? `${info.gregorian.dayNameBn}, ${info.gregorian.bn}`
                       : `${info.gregorian.dayNameEn}, ${info.gregorian.en}`}
                   </span>
-                  <span className="opacity-60">|</span>
-                  <span className="text-emerald-100 whitespace-nowrap">
+                  <span className="opacity-60 hidden xs:inline">|</span>
+                  <span className="text-emerald-100 whitespace-nowrap hidden xs:inline">
                     {lang === 'bn' ? info.bangla.bn : info.bangla.en}
-                  </span>
-                  <span className="opacity-60 hidden md:inline">|</span>
-                  <span className="text-amber-100 hidden md:inline">
-                    {lang === 'bn' ? info.hijri.bn : info.hijri.en}
                   </span>
                 </div>
 
-                <div className="shrink-0 flex items-center gap-1 font-mono font-bold text-white bg-black/40 px-2 sm:px-3 py-0.5 rounded-md border border-white/10 text-[10px] sm:text-xs">
+                <div className="shrink-0 flex items-center gap-1 font-mono font-bold text-white bg-black/40 px-2 sm:px-3 py-0.5 rounded-md border border-white/10 text-[9px] sm:text-xs">
                   <span>{lang === 'bn' ? info.time.bn : info.time.en}</span>
                 </div>
               </>
