@@ -5,7 +5,7 @@ export async function POST(request: Request) {
   try {
     const { password } = await request.json();
     const config = getSiteConfig();
-    const expectedPassword = config.adminPassword || 'admin';
+    const expectedPassword = process.env.ADMIN_PASSWORD || config.adminPassword || 'admin';
 
     if (password === expectedPassword) {
       return NextResponse.json({

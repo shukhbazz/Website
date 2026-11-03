@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     // Verify admin authorization
     const authHeader = request.headers.get('authorization');
     const providedPass = request.headers.get('x-admin-pass');
-    const expectedPass = currentConfig.adminPassword || 'admin';
+    const expectedPass = process.env.ADMIN_PASSWORD || currentConfig.adminPassword || 'admin';
 
     if (providedPass !== expectedPass && authHeader !== `Bearer ${expectedPass}`) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

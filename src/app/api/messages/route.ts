@@ -4,7 +4,7 @@ import { getMessages, addMessage, deleteMessage, getSiteConfig } from '@/lib/dat
 export async function GET(request: Request) {
   const currentConfig = getSiteConfig();
   const providedPass = request.headers.get('x-admin-pass');
-  const expectedPass = currentConfig.adminPassword || 'admin';
+  const expectedPass = process.env.ADMIN_PASSWORD || currentConfig.adminPassword || 'admin';
 
   if (providedPass !== expectedPass) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -39,7 +39,7 @@ export async function DELETE(request: Request) {
   try {
     const currentConfig = getSiteConfig();
     const providedPass = request.headers.get('x-admin-pass');
-    const expectedPass = currentConfig.adminPassword || 'admin';
+    const expectedPass = process.env.ADMIN_PASSWORD || currentConfig.adminPassword || 'admin';
 
     if (providedPass !== expectedPass) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

@@ -14,7 +14,7 @@ export async function POST(request: Request) {
       // Admin update
       const currentConfig = getSiteConfig();
       const providedPass = request.headers.get('x-admin-pass');
-      const expectedPass = currentConfig.adminPassword || 'admin';
+      const expectedPass = process.env.ADMIN_PASSWORD || currentConfig.adminPassword || 'admin';
 
       if (providedPass !== expectedPass) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

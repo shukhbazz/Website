@@ -1626,18 +1626,31 @@ export default function AdminDashboardPage() {
                 <Key className="w-5 h-5 text-amber-400" />
                 <span>অ্যাডমিন পাসওয়ার্ড পরিবর্তন</span>
               </h3>
-              <div className="max-w-md space-y-3">
-                <label className="block text-xs font-medium text-slate-300">নতুন পাসওয়ার্ড</label>
-                <input
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="নতুন পাসওয়ার্ড লিখুন"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white"
-                />
-                <p className="text-[11px] text-slate-400">
-                  পাসওয়ার্ড পরিবর্তন কার্যকর করতে উপরে &lsquo;সেভ করুন&rsquo; বাটনে ক্লিক করুন।
-                </p>
+              <div className="max-w-md space-y-4">
+                <div>
+                  <label className="block text-xs font-medium text-slate-300 mb-1">নতুন পাসওয়ার্ড</label>
+                  <input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="নতুন পাসওয়ার্ড লিখুন"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-cyan-500"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={handleSave}
+                  disabled={saving || !newPassword.trim()}
+                  className="w-full py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white text-xs font-semibold transition cursor-pointer shadow-lg shadow-amber-600/20"
+                >
+                  {saving ? 'সংরক্ষণ হচ্ছে...' : 'পাসওয়ার্ড নিশ্চিত ও সেভ করুন'}
+                </button>
+                <div className="p-3.5 rounded-2xl bg-slate-800/80 border border-slate-700/80 text-[11px] text-slate-300 space-y-1.5">
+                  <p className="font-semibold text-amber-300">💡 স্থায়ী সিকিউরিটি টিপস:</p>
+                  <p>
+                    Vercel ক্লাউড হোস্টিংয়ে সর্বোচ্চ নিরাপত্তার জন্য Vercel ড্যাশবোর্ডের <code className="text-cyan-300 font-mono">Settings ➔ Environment Variables</code>-এ গিয়ে <code className="text-cyan-300 font-mono">ADMIN_PASSWORD</code> ভেরিয়েবল হিসেবে আপনার পাসওয়ার্ড সেট করে নিতে পারেন।
+                  </p>
+                </div>
               </div>
             </div>
           )}
