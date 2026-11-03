@@ -3,23 +3,24 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { IslamicHeaderConfig } from '@/lib/types';
-import { getTripleCalendarInfo, getBangladeshNow } from '@/lib/calendar';
+import { getTripleCalendarInfo, getVisitorLocalDate } from '@/lib/calendar';
 import { motion } from 'framer-motion';
 
 interface IslamicScreenProps {
   islamicHeader: IslamicHeaderConfig;
+  visitorTimezone?: string;
 }
 
 type DayTimeState = 'dawn' | 'day' | 'sunset' | 'night';
 
-function computeTimeState(rawNow: Date): DayTimeState {
-  const now = getBangladeshNow(rawNow);
+function computeTimeState(rawNow: Date, timeZone?: string): DayTimeState {
+  const now = getVisitorLocalDate(rawNow, timeZone);
   const hour = now.getHours();
   const minute = now.getMinutes();
   const month = now.getMonth();
   const timeInDecimal = hour + minute / 60;
 
-  // Seasonal sunset calculation for Bangladesh
+  // Seasonal twilight/sunset calculation for visitor's location
   const sunsetStart = (month >= 9 || month <= 1) ? 17.15 : 18.0;
   const nightStart = sunsetStart + 1.5;
 
@@ -34,10 +35,14 @@ function computeTimeState(rawNow: Date): DayTimeState {
   }
 }
 
-export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
+export default function IslamicScreen({ islamicHeader, visitorTimezone }: IslamicScreenProps) {
   const { lang } = useLanguage();
-  const [info, setInfo] = useState<ReturnType<typeof getTripleCalendarInfo> | null>(() => getTripleCalendarInfo(new Date()));
-  const [timeState, setTimeState] = useState<DayTimeState>(() => computeTimeState(new Date()));
+  const [info, setInfo] = useState<ReturnType<typeof getTripleCalendarInfo> | null>(() => {
+    return getTripleCalendarInfo(new Date(), typeof window === 'undefined' ? visitorTimezone : undefined);
+  });
+  const [timeState, setTimeState] = useState<DayTimeState>(() => {
+    return computeTimeState(new Date(), typeof window === 'undefined' ? visitorTimezone : undefined);
+  });
 
   useEffect(() => {
     const updateTimeAndSun = () => {

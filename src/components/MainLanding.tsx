@@ -18,9 +18,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 interface MainLandingProps {
   initialConfig: SiteConfig;
+  visitorTimezone?: string;
 }
 
-export default function MainLanding({ initialConfig }: MainLandingProps) {
+export default function MainLanding({ initialConfig, visitorTimezone }: MainLandingProps) {
   const [config, setConfig] = useState<SiteConfig>(initialConfig);
   const [shopModalOpen, setShopModalOpen] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
@@ -273,7 +274,7 @@ export default function MainLanding({ initialConfig }: MainLandingProps) {
   const renderCurrentScreen = (screenIndex: number) => {
     // Screen 0: Islamic (Bismillah, Verse, Triple Calendar, Sun simulation)
     if (screenIndex === 0) {
-      return <IslamicScreen islamicHeader={config.islamicHeader} />;
+      return <IslamicScreen islamicHeader={config.islamicHeader} visitorTimezone={visitorTimezone} />;
     }
 
     // Screen 1: Profile & Menus (Portfolio -> Blog -> Shop)
