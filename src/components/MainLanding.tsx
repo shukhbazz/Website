@@ -336,6 +336,7 @@ export default function MainLanding({ initialConfig }: MainLandingProps) {
         <LiveChatWidget
           chat={{ ...config.chat, enabled: true }}
           profile={config.profile}
+          whatsappNumber={config.contacts?.whatsappNumber}
           isOpen={chatOpen}
           onToggle={() => setChatOpen(!chatOpen)}
           onClose={() => setChatOpen(false)}

@@ -10,7 +10,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const messages = getMessages();
+  const messages = await getMessages();
   return NextResponse.json(messages);
 }
 
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Message cannot be empty' }, { status: 400 });
     }
 
-    const saved = addMessage({
+    const saved = await addMessage({
       name: name?.trim() || 'Anonymous Visitor',
       contact: contact?.trim() || 'Not provided',
       message: message.trim()
@@ -46,7 +46,7 @@ export async function DELETE(request: Request) {
     }
 
     const { id } = await request.json();
-    deleteMessage(id);
+    await deleteMessage(id);
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to delete message', details: String(error) }, { status: 500 });

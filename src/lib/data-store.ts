@@ -9,7 +9,10 @@ const DATA_DIR = path.join(process.cwd(), 'src', 'data');
 const CONFIG_FILE = path.join(DATA_DIR, 'site-config.json');
 const STATS_FILE = path.join(DATA_DIR, 'visitor-stats.json');
 const MESSAGES_FILE = path.join(DATA_DIR, 'messages.json');
+
 const TMP_CONFIG_FILE = path.join('/tmp', 'site-config.json');
+const TMP_STATS_FILE = path.join('/tmp', 'visitor-stats.json');
+const TMP_MESSAGES_FILE = path.join('/tmp', 'messages.json');
 
 // In-memory cache for fast access and fallback in read-only environments
 let inMemoryConfig: SiteConfig = defaultConfig as unknown as SiteConfig;
@@ -48,10 +51,8 @@ function getRedisConfig() {
   return { url, token, isConfigured: Boolean(url && token) };
 }
 
-export async function getSiteConfig(): Promise<SiteConfig> {
+async function redisGet<T>(key: string): Promise<T | null> {
   const { url, token, isConfigured } = getRedisConfig();
-
-  // 1. Check Cloud Redis if configured (Vercel KV / Upstash)
   if (isConfigured && url && token) {
     try {
       const cleanUrl = url.replace(/\/+$/, '');
@@ -61,23 +62,54 @@ export async function getSiteConfig(): Promise<SiteConfig> {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(['GET', 'shukhbazz_site_config']),
+        body: JSON.stringify(['GET', key]),
         cache: 'no-store'
       });
       if (res.ok) {
         const data = await res.json();
-        if (data && data.result) {
+        if (data && data.result !== null && data.result !== undefined) {
           const parsed = typeof data.result === 'string' ? JSON.parse(data.result) : data.result;
-          inMemoryConfig = parsed;
-          return inMemoryConfig;
+          return parsed as T;
         }
       }
     } catch (err) {
-      console.warn('Could not read from Redis, falling back to disk/memory:', err);
+      console.warn(`Redis GET for "${key}" failed, using fallback:`, err);
     }
   }
+  return null;
+}
 
-  // 2. Check writable /tmp fallback (Vercel serverless environment)
+async function redisSet<T>(key: string, value: T): Promise<boolean> {
+  const { url, token, isConfigured } = getRedisConfig();
+  if (isConfigured && url && token) {
+    try {
+      const cleanUrl = url.replace(/\/+$/, '');
+      const res = await fetch(cleanUrl, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(['SET', key, JSON.stringify(value)])
+      });
+      return res.ok;
+    } catch (err) {
+      console.warn(`Redis SET for "${key}" failed:`, err);
+    }
+  }
+  return false;
+}
+
+// ---------------- Site Config ----------------
+export async function getSiteConfig(): Promise<SiteConfig> {
+  // 1. Redis
+  const redisVal = await redisGet<SiteConfig>('shukhbazz_site_config');
+  if (redisVal) {
+    inMemoryConfig = redisVal;
+    return inMemoryConfig;
+  }
+
+  // 2. /tmp
   try {
     if (fs.existsSync(TMP_CONFIG_FILE)) {
       const data = fs.readFileSync(TMP_CONFIG_FILE, 'utf-8');
@@ -88,14 +120,14 @@ export async function getSiteConfig(): Promise<SiteConfig> {
     // ignore
   }
 
-  // 3. Check local codebase file
+  // 3. Local disk
   try {
     if (fs.existsSync(CONFIG_FILE)) {
       const data = fs.readFileSync(CONFIG_FILE, 'utf-8');
       inMemoryConfig = JSON.parse(data);
     }
   } catch (err) {
-    console.warn('Could not read site-config.json from disk, using memory/fallback:', err);
+    console.warn('Could not read site-config.json from disk:', err);
   }
 
   return inMemoryConfig;
@@ -104,75 +136,90 @@ export async function getSiteConfig(): Promise<SiteConfig> {
 export async function saveSiteConfig(newConfig: SiteConfig): Promise<boolean> {
   inMemoryConfig = newConfig;
 
-  // 1. Save to Cloud Redis if configured (Upstash / Vercel KV)
-  const { url, token, isConfigured } = getRedisConfig();
-  if (isConfigured && url && token) {
-    try {
-      const cleanUrl = url.replace(/\/+$/, '');
-      const res = await fetch(cleanUrl, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(['SET', 'shukhbazz_site_config', JSON.stringify(newConfig)])
-      });
-      if (!res.ok) {
-        console.warn('Upstash Redis set command response not OK:', res.status);
-      }
-    } catch (err) {
-      console.warn('Could not save to Redis:', err);
-    }
-  }
+  // 1. Redis
+  await redisSet('shukhbazz_site_config', newConfig);
 
-  // 2. Save to /tmp fallback (writable on Vercel lambda)
+  // 2. /tmp
   try {
     fs.writeFileSync(TMP_CONFIG_FILE, JSON.stringify(newConfig, null, 2), 'utf-8');
   } catch {
     // ignore
   }
 
-  // 3. Save to local codebase data directory (works on local machine)
+  // 3. Local disk
   try {
     if (!fs.existsSync(DATA_DIR)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
     }
     fs.writeFileSync(CONFIG_FILE, JSON.stringify(newConfig, null, 2), 'utf-8');
-  } catch (err) {
-    console.warn('Could not write site-config.json to disk (expected on read-only serverless):', err);
+  } catch {
+    // expected on serverless
   }
 
   return true;
 }
 
-export function getVisitorStats(): VisitorStats {
+// ---------------- Visitor Stats ----------------
+export async function getVisitorStats(): Promise<VisitorStats> {
+  // 1. Redis
+  const redisVal = await redisGet<VisitorStats>('shukhbazz_visitor_stats');
+  if (redisVal) {
+    inMemoryStats = redisVal;
+    return inMemoryStats;
+  }
+
+  // 2. /tmp
+  try {
+    if (fs.existsSync(TMP_STATS_FILE)) {
+      const data = fs.readFileSync(TMP_STATS_FILE, 'utf-8');
+      inMemoryStats = JSON.parse(data);
+      return inMemoryStats;
+    }
+  } catch {
+    // ignore
+  }
+
+  // 3. Local disk
   try {
     if (fs.existsSync(STATS_FILE)) {
       const data = fs.readFileSync(STATS_FILE, 'utf-8');
       inMemoryStats = JSON.parse(data);
     }
   } catch (err) {
-    console.warn('Could not read visitor-stats.json from disk, using memory/fallback:', err);
+    console.warn('Could not read visitor-stats.json from disk:', err);
   }
+
   return inMemoryStats;
 }
 
-export function saveVisitorStats(stats: VisitorStats): boolean {
+export async function saveVisitorStats(stats: VisitorStats): Promise<boolean> {
   inMemoryStats = stats;
+
+  // 1. Redis
+  await redisSet('shukhbazz_visitor_stats', stats);
+
+  // 2. /tmp
+  try {
+    fs.writeFileSync(TMP_STATS_FILE, JSON.stringify(stats, null, 2), 'utf-8');
+  } catch {
+    // ignore
+  }
+
+  // 3. Local disk
   try {
     if (!fs.existsSync(DATA_DIR)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
     }
     fs.writeFileSync(STATS_FILE, JSON.stringify(stats, null, 2), 'utf-8');
-    return true;
-  } catch (err) {
-    console.warn('Could not write visitor-stats.json to disk:', err);
-    return true;
+  } catch {
+    // expected on serverless
   }
+
+  return true;
 }
 
-export function recordVisit(): VisitorStats {
-  const current = getVisitorStats();
+export async function recordVisit(): Promise<VisitorStats> {
+  const current = await getVisitorStats();
   const now = new Date();
   const todayStr = now.toISOString().slice(0, 10);
   const weekNum = getWeekNumber(now);
@@ -213,12 +260,31 @@ export function recordVisit(): VisitorStats {
     lastYearNum: yearNum
   };
 
-  saveVisitorStats(updated);
+  await saveVisitorStats(updated);
   return updated;
 }
 
-// Chat Messages Handling
-export function getMessages(): ChatMessage[] {
+// ---------------- Chat Messages ----------------
+export async function getMessages(): Promise<ChatMessage[]> {
+  // 1. Redis
+  const redisVal = await redisGet<ChatMessage[]>('shukhbazz_messages');
+  if (redisVal && Array.isArray(redisVal)) {
+    inMemoryMessages = redisVal;
+    return inMemoryMessages;
+  }
+
+  // 2. /tmp
+  try {
+    if (fs.existsSync(TMP_MESSAGES_FILE)) {
+      const data = fs.readFileSync(TMP_MESSAGES_FILE, 'utf-8');
+      inMemoryMessages = JSON.parse(data);
+      return inMemoryMessages;
+    }
+  } catch {
+    // ignore
+  }
+
+  // 3. Local disk
   try {
     if (fs.existsSync(MESSAGES_FILE)) {
       const data = fs.readFileSync(MESSAGES_FILE, 'utf-8');
@@ -227,11 +293,12 @@ export function getMessages(): ChatMessage[] {
   } catch (err) {
     console.warn('Could not read messages.json from disk:', err);
   }
+
   return inMemoryMessages;
 }
 
-export function addMessage(msg: Omit<ChatMessage, 'id' | 'date' | 'read'>): ChatMessage {
-  const messages = getMessages();
+export async function addMessage(msg: Omit<ChatMessage, 'id' | 'date' | 'read'>): Promise<ChatMessage> {
+  const messages = await getMessages();
   const newMsg: ChatMessage = {
     id: `msg_${Date.now()}`,
     ...msg,
@@ -242,26 +309,50 @@ export function addMessage(msg: Omit<ChatMessage, 'id' | 'date' | 'read'>): Chat
   messages.unshift(newMsg);
   inMemoryMessages = messages;
 
+  // 1. Redis
+  await redisSet('shukhbazz_messages', messages);
+
+  // 2. /tmp
+  try {
+    fs.writeFileSync(TMP_MESSAGES_FILE, JSON.stringify(messages, null, 2), 'utf-8');
+  } catch {
+    // ignore
+  }
+
+  // 3. Local disk
   try {
     if (!fs.existsSync(DATA_DIR)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
     }
     fs.writeFileSync(MESSAGES_FILE, JSON.stringify(messages, null, 2), 'utf-8');
-  } catch (err) {
-    console.warn('Could not write messages.json:', err);
+  } catch {
+    // expected on serverless
   }
 
   return newMsg;
 }
 
-export function deleteMessage(id: string): boolean {
-  let messages = getMessages();
+export async function deleteMessage(id: string): Promise<boolean> {
+  let messages = await getMessages();
   messages = messages.filter((m) => m.id !== id);
   inMemoryMessages = messages;
+
+  // 1. Redis
+  await redisSet('shukhbazz_messages', messages);
+
+  // 2. /tmp
+  try {
+    fs.writeFileSync(TMP_MESSAGES_FILE, JSON.stringify(messages, null, 2), 'utf-8');
+  } catch {
+    // ignore
+  }
+
+  // 3. Local disk
   try {
     fs.writeFileSync(MESSAGES_FILE, JSON.stringify(messages, null, 2), 'utf-8');
-    return true;
   } catch {
-    return true;
+    // expected on serverless
   }
+
+  return true;
 }

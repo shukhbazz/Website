@@ -3,12 +3,13 @@
 import React, { useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { ChatConfig, ProfileConfig } from '@/lib/types';
-import { MessageSquare, X, Send, Sparkles, CheckCircle2 } from 'lucide-react';
+import { MessageSquare, X, Send, Sparkles, CheckCircle2, MessageCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface LiveChatWidgetProps {
   chat: ChatConfig;
   profile: ProfileConfig;
+  whatsappNumber?: string;
   isOpen: boolean;
   onToggle: () => void;
   onClose: () => void;
@@ -17,6 +18,7 @@ interface LiveChatWidgetProps {
 export default function LiveChatWidget({
   chat,
   profile,
+  whatsappNumber,
   isOpen,
   onToggle,
   onClose
@@ -139,6 +141,32 @@ export default function LiveChatWidget({
                   {lang === 'bn' ? chat.greetingBn : chat.greetingEn}
                 </div>
               </div>
+
+              {/* Direct WhatsApp Quick Chat Option */}
+              {whatsappNumber && (
+                <div className="pt-1">
+                  <a
+                    href={`https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
+                      lang === 'bn'
+                        ? 'আসসালামু আলাইকুম, আমি আপনার ওয়েবসাইট shukhbazz.info.bd থেকে নক দিচ্ছি।'
+                        : 'Hello, I am reaching out from your website shukhbazz.info.bd.'
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-2 px-3 rounded-xl bg-emerald-600/90 hover:bg-emerald-500 text-white font-medium text-xs flex items-center justify-center gap-2 border border-emerald-400/30 transition shadow-sm cursor-pointer"
+                  >
+                    <MessageCircle className="w-4 h-4 text-emerald-200" />
+                    <span>{lang === 'bn' ? 'সরাসরি হোয়াটসঅ্যাপে কথা বলুন' : 'Chat on WhatsApp'}</span>
+                  </a>
+                  <div className="relative flex py-2 items-center">
+                    <div className="flex-grow border-t border-slate-800"></div>
+                    <span className="flex-shrink mx-2 text-[10px] text-slate-400 uppercase tracking-wider">
+                      {lang === 'bn' ? 'অথবা ইনবক্সে লিখুন' : 'Or send inbox note'}
+                    </span>
+                    <div className="flex-grow border-t border-slate-800"></div>
+                  </div>
+                </div>
+              )}
 
               {sentSuccess ? (
                 <div className="p-4 rounded-2xl bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-xs flex flex-col items-center text-center gap-2">
