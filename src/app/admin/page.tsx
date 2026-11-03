@@ -1663,12 +1663,6 @@ export default function AdminDashboardPage() {
                 >
                   {saving ? 'সংরক্ষণ হচ্ছে...' : 'পাসওয়ার্ড নিশ্চিত ও সেভ করুন'}
                 </button>
-                <div className="p-3.5 rounded-2xl bg-slate-800/80 border border-slate-700/80 text-[11px] text-slate-300 space-y-1.5">
-                  <p className="font-semibold text-amber-300">💡 স্থায়ী সিকিউরিটি টিপস:</p>
-                  <p>
-                    Vercel ক্লাউড হোস্টিংয়ে সর্বোচ্চ নিরাপত্তার জন্য Vercel ড্যাশবোর্ডের <code className="text-cyan-300 font-mono">Settings ➔ Environment Variables</code>-এ গিয়ে <code className="text-cyan-300 font-mono">ADMIN_PASSWORD</code> ভেরিয়েবল হিসেবে আপনার পাসওয়ার্ড সেট করে নিতে পারেন।
-                  </p>
-                </div>
               </div>
             </div>
           )}
