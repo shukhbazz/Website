@@ -136,11 +136,48 @@ export default function MainLanding({ initialConfig }: MainLandingProps) {
       }
     };
 
+    let touchStartX = 0;
+    let touchMoved = false;
+
     const handleTouchStart = (e: TouchEvent) => {
       touchStartYRef.current = e.touches[0].clientY;
+      touchStartX = e.touches[0].clientX;
+      touchMoved = false;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      const target = e.target as HTMLElement;
+      if (target && target.closest('.allow-scroll')) return;
+      if (shopModalOpen || isTransitioningRef.current || touchMoved) return;
+
+      const currentY = e.touches[0].clientY;
+      const currentX = e.touches[0].clientX;
+      const deltaY = touchStartYRef.current - currentY;
+      const deltaX = Math.abs(touchStartX - currentX);
+
+      // Trigger smoothly as soon as swipe exceeds 35px vertically
+      if (Math.abs(deltaY) > 35 && Math.abs(deltaY) > deltaX * 1.2) {
+        const now = Date.now();
+        if (now - lastTriggerTimeRef.current < 550) return;
+
+        lastTriggerTimeRef.current = now;
+        isTransitioningRef.current = true;
+        touchMoved = true;
+
+        if (deltaY > 0) {
+          goToScreen(currentScreen + 1);
+        } else {
+          goToScreen(currentScreen - 1);
+        }
+
+        setTimeout(() => {
+          isTransitioningRef.current = false;
+        }, 550);
+      }
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
+      if (touchMoved) return;
       const target = e.target as HTMLElement;
       if (target && target.closest('.allow-scroll')) return;
       if (shopModalOpen || isTransitioningRef.current) return;
@@ -148,9 +185,9 @@ export default function MainLanding({ initialConfig }: MainLandingProps) {
       const touchEndY = e.changedTouches[0].clientY;
       const diff = touchStartYRef.current - touchEndY;
 
-      if (Math.abs(diff) > 40) {
+      if (Math.abs(diff) > 25) {
         const now = Date.now();
-        if (now - lastTriggerTimeRef.current < 600) return;
+        if (now - lastTriggerTimeRef.current < 550) return;
         lastTriggerTimeRef.current = now;
         isTransitioningRef.current = true;
 
@@ -162,55 +199,49 @@ export default function MainLanding({ initialConfig }: MainLandingProps) {
 
         setTimeout(() => {
           isTransitioningRef.current = false;
-        }, 600);
+        }, 550);
       }
     };
 
     window.addEventListener('wheel', handleWheel, { passive: true });
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
     window.addEventListener('touchend', handleTouchEnd, { passive: true });
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
       clearTimeout(resetTimer);
     };
   }, [currentScreen, totalScreens, goToScreen, shopModalOpen]);
 
-  // Framer Motion Luxurious Vertical Parallax Slide Variants:
-  // Both incoming and outgoing screens animate in tandem (NO blank pauses)
+  // Framer Motion High-Performance 60fps/120fps GPU-Accelerated Slide Variants
   const slideVariants = {
     enter: (dir: number) => ({
       y: dir > 0 ? '100%' : '-100%',
-      opacity: 0.25,
-      scale: 0.98,
+      opacity: 0.6,
       zIndex: 10,
     }),
     center: {
       y: 0,
       opacity: 1,
-      scale: 1,
       zIndex: 10,
       transition: {
-        y: { type: 'spring' as const, stiffness: 220, damping: 26 },
-        opacity: { duration: 0.45, ease: 'easeOut' as const },
-        scale: { duration: 0.45, ease: 'easeOut' as const }
+        y: { type: 'spring' as const, stiffness: 260, damping: 28 },
+        opacity: { duration: 0.35, ease: 'easeOut' as const },
       }
     },
     exit: (dir: number) => ({
-      y: dir > 0 ? '-22%' : '22%',
+      y: dir > 0 ? '-35%' : '35%',
       opacity: 0,
-      scale: 0.94,
-      filter: 'blur(6px)',
       zIndex: 0,
       transition: {
-        y: { duration: 0.52, ease: [0.22, 1, 0.36, 1] as const },
-        opacity: { duration: 0.38 },
-        scale: { duration: 0.52 },
-        filter: { duration: 0.38 }
+        y: { duration: 0.45, ease: [0.22, 1, 0.36, 1] as const },
+        opacity: { duration: 0.3 }
       }
     })
   };
@@ -273,7 +304,7 @@ export default function MainLanding({ initialConfig }: MainLandingProps) {
       {/* 1. Global Content Protection (Anti-Copy & Anti-Download) */}
       <ContentProtection />
 
-      <div className="relative w-full h-screen overflow-hidden bg-slate-950 text-slate-100 selection:bg-cyan-500 selection:text-slate-950 font-sans">
+      <div className="relative w-full h-screen h-[100dvh] min-h-[100dvh] overflow-hidden bg-slate-950 text-slate-100 selection:bg-cyan-500 selection:text-slate-950 font-sans overscroll-none touch-none">
         {/* 2. Language Switcher (Fixed at Top-Right Corner) */}
         <LanguageToggle />
 
