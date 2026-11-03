@@ -35,7 +35,7 @@ export default function Footer({ profile, contacts }: FooterProps) {
   useEffect(() => {
     async function loadStats() {
       try {
-        const res = await fetch('/api/visitors');
+        const res = await fetch('/api/visitors', { cache: 'no-store' });
         const data = await res.json();
         if (data) setStats(data);
       } catch (err) {

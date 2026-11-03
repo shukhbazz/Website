@@ -28,7 +28,8 @@ import {
   Bell,
   Globe,
   Eye,
-  EyeOff
+  EyeOff,
+  RefreshCw
 } from 'lucide-react';
 import ImageUploader from '@/components/admin/ImageUploader';
 
@@ -123,8 +124,25 @@ export default function AdminDashboardPage() {
     }
   };
 
-  const handleSaveStats = async () => {
-    if (!stats || !token) return;
+  const handleRefreshStats = async () => {
+    setSaving(true);
+    try {
+      const res = await fetch('/api/visitors', { cache: 'no-store' });
+      const data = await res.json();
+      if (data && typeof data.total === 'number') {
+        setStats(data);
+        setAlert({ type: 'success', text: 'সর্বশেষ লাইভ ভিজিটর ডাটা আপডেট হয়েছে!' });
+      }
+    } catch {
+      setAlert({ type: 'error', text: 'ডাটা রিফ্রেশ করা যায়নি।' });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleResetStats = async () => {
+    if (!token) return;
+    if (!window.confirm('আপনি কি নিশ্চিত যে সকল ভিজিটর গণনা রিসেট করে ০ (শূন্য) থেকে শুরু করতে চান?')) return;
     setSaving(true);
     try {
       const res = await fetch('/api/visitors', {
@@ -133,14 +151,15 @@ export default function AdminDashboardPage() {
           'Content-Type': 'application/json',
           'x-admin-pass': token
         },
-        body: JSON.stringify({ action: 'set', stats })
+        body: JSON.stringify({ action: 'reset' })
       });
       const data = await res.json();
       if (res.ok && data.success) {
-        setAlert({ type: 'success', text: 'কাউন্টার সফলভাবে আপডেট হয়েছে!' });
+        setStats(data.stats);
+        setAlert({ type: 'success', text: 'কাউন্টার সফলভাবে রিসেট হয়ে ০ করা হয়েছে!' });
       }
     } catch {
-      setAlert({ type: 'error', text: 'আপডেট করা যায়নি।' });
+      setAlert({ type: 'error', text: 'রিসেট করা যায়নি।' });
     } finally {
       setSaving(false);
     }
@@ -1566,57 +1585,79 @@ export default function AdminDashboardPage() {
                 <div>
                   <h3 className="text-base font-bold text-white flex items-center gap-2">
                     <Users className="w-5 h-5 text-cyan-400" />
-                    <span>লাইভ ভিজিটর কাউন্টার কন্ট্রোল</span>
+                    <span>প্রকৃত লাইভ ভিজিটর মনিটর</span>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-normal px-2 py-0.5 rounded-full bg-emerald-950/70 text-emerald-300 border border-emerald-500/30">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                      অটো ট্র্যাকড
+                    </span>
                   </h3>
-                  <p className="text-xs text-slate-400 mt-0.5">
-                    কাউন্টার সংখ্যা দেখতে বা ম্যানুয়ালি পরিবর্তন করতে পারেন
+                  <p className="text-xs text-slate-400 mt-1">
+                    🔒 কোনো ভুয়া বা ম্যানুয়াল সংখ্যা ইনপুট নয় — ভিজিটর সাইটে ঢুকলেই স্বয়ংক্রিয়ভাবে ক্লাউড ডাটাবেসে রিয়েল-টাইমে গণনা হয়।
                   </p>
                 </div>
-                <button
-                  onClick={handleSaveStats}
-                  disabled={saving}
-                  className="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold transition cursor-pointer self-start sm:self-auto"
-                >
-                  কাউন্টার আপডেট করুন
-                </button>
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <button
+                    onClick={handleRefreshStats}
+                    disabled={saving}
+                    className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-300 hover:text-white border border-slate-700 text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer"
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 ${saving ? 'animate-spin' : ''}`} />
+                    <span>লাইভ রিফ্রেশ</span>
+                  </button>
+                  <button
+                    onClick={handleResetStats}
+                    disabled={saving}
+                    className="px-3.5 py-2 rounded-xl bg-red-950/40 hover:bg-red-900/60 text-red-300 border border-red-800/40 text-xs font-semibold transition cursor-pointer"
+                  >
+                    কাউন্টার রিসেট (০ করুন)
+                  </button>
+                </div>
               </div>
 
+              {/* Glowing Real-time Metrics Display */}
               <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-                <div className="p-4 rounded-2xl bg-slate-800 border border-slate-700">
-                  <label className="block text-xs font-semibold text-cyan-400 mb-1">আজকের ভিজিটর</label>
-                  <input
-                    type="number"
-                    value={stats.today}
-                    onChange={(e) => setStats({ ...stats, today: parseInt(e.target.value, 10) || 0 })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-lg font-bold text-white font-mono"
-                  />
+                <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900 border border-cyan-500/30 relative overflow-hidden">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-medium text-cyan-400">আজকের ভিজিটর</span>
+                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                  </div>
+                  <div className="text-3xl font-extrabold text-white font-mono tracking-tight">
+                    {stats.today}
+                  </div>
+                  <div className="text-[11px] text-slate-400 mt-1">আজকের মোট ভিজিট</div>
                 </div>
-                <div className="p-4 rounded-2xl bg-slate-800 border border-slate-700">
-                  <label className="block text-xs font-semibold text-indigo-400 mb-1">এই সপ্তাহের ভিজিটর</label>
-                  <input
-                    type="number"
-                    value={stats.thisWeek}
-                    onChange={(e) => setStats({ ...stats, thisWeek: parseInt(e.target.value, 10) || 0 })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-lg font-bold text-white font-mono"
-                  />
+
+                <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900 border border-indigo-500/30 relative overflow-hidden">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-medium text-indigo-400">এই সপ্তাহের ভিজিটর</span>
+                    <span className="w-2 h-2 rounded-full bg-indigo-400" />
+                  </div>
+                  <div className="text-3xl font-extrabold text-white font-mono tracking-tight">
+                    {stats.thisWeek}
+                  </div>
+                  <div className="text-[11px] text-slate-400 mt-1">চলতি সপ্তাহের যোগফল</div>
                 </div>
-                <div className="p-4 rounded-2xl bg-slate-800 border border-slate-700">
-                  <label className="block text-xs font-semibold text-purple-400 mb-1">এই মাসের ভিজিটর</label>
-                  <input
-                    type="number"
-                    value={stats.thisMonth}
-                    onChange={(e) => setStats({ ...stats, thisMonth: parseInt(e.target.value, 10) || 0 })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-lg font-bold text-white font-mono"
-                  />
+
+                <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900 border border-purple-500/30 relative overflow-hidden">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-medium text-purple-400">এই মাসের ভিজিটর</span>
+                    <span className="w-2 h-2 rounded-full bg-purple-400" />
+                  </div>
+                  <div className="text-3xl font-extrabold text-white font-mono tracking-tight">
+                    {stats.thisMonth}
+                  </div>
+                  <div className="text-[11px] text-slate-400 mt-1">চলতি মাসের যোগফল</div>
                 </div>
-                <div className="p-4 rounded-2xl bg-slate-800 border border-slate-700">
-                  <label className="block text-xs font-semibold text-pink-400 mb-1">সর্বমোট ভিজিটর</label>
-                  <input
-                    type="number"
-                    value={stats.total}
-                    onChange={(e) => setStats({ ...stats, total: parseInt(e.target.value, 10) || 0 })}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-lg font-bold text-white font-mono"
-                  />
+
+                <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900 border border-emerald-500/30 relative overflow-hidden">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-medium text-emerald-400">সর্বমোট ভিজিটর</span>
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                  </div>
+                  <div className="text-3xl font-extrabold text-emerald-300 font-mono tracking-tight">
+                    {stats.total}
+                  </div>
+                  <div className="text-[11px] text-emerald-400/80 mt-1">লাইফটাইম মোট ইউনিক সেশন</div>
                 </div>
               </div>
             </div>

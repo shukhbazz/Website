@@ -45,6 +45,29 @@ export default function MainLanding({ initialConfig }: MainLandingProps) {
     syncLatestConfig();
   }, []);
 
+  // Automated Real-Time Visitor Tracking on Page Load
+  useEffect(() => {
+    async function trackVisit() {
+      try {
+        const sessionKey = 'shukhbazz_visit_session';
+        const alreadyCounted = typeof window !== 'undefined' && sessionStorage.getItem(sessionKey);
+        if (!alreadyCounted) {
+          if (typeof window !== 'undefined') {
+            sessionStorage.setItem(sessionKey, 'active');
+          }
+          await fetch('/api/visitors', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'record' })
+          });
+        }
+      } catch (err) {
+        console.warn('Real-time visitor tracking error:', err);
+      }
+    }
+    trackVisit();
+  }, []);
+
   const quotes = config.quotes || [];
   const gallery = config.gallery || [];
   const totalScreens = 2 + quotes.length + gallery.length + 1;
