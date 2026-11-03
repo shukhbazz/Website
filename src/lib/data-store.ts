@@ -24,10 +24,27 @@ function getWeekNumber(d: Date): number {
   return Math.ceil((((date.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
 }
 
-// Helper to access Upstash Redis or Vercel KV if available
+// Helper to access Upstash Redis or Vercel KV if available (robust dynamic lookup)
 function getRedisConfig() {
-  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+  const env = process.env;
+  const urlKey = Object.keys(env).find(
+    (k) =>
+      k === 'KV_REST_API_URL' ||
+      k === 'UPSTASH_REDIS_REST_URL' ||
+      k.endsWith('_REST_API_URL') ||
+      k.endsWith('_REST_URL')
+  );
+  const tokenKey = Object.keys(env).find(
+    (k) =>
+      k === 'KV_REST_API_TOKEN' ||
+      k === 'UPSTASH_REDIS_REST_TOKEN' ||
+      k.endsWith('_REST_API_TOKEN') ||
+      k.endsWith('_REST_TOKEN')
+  );
+
+  const url = urlKey ? env[urlKey] : undefined;
+  const token = tokenKey ? env[tokenKey] : undefined;
+
   return { url, token, isConfigured: Boolean(url && token) };
 }
 
