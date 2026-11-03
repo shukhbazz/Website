@@ -311,8 +311,20 @@ export function getBengaliTimePeriod(dateOrHour: Date | number = new Date()): { 
   return { periodBn, periodEn };
 }
 
+// Helper to convert any Date to Bangladesh Standard Time (Asia/Dhaka, GMT+6)
+// This guarantees that Vercel SSR (which runs in UTC) computes exact Bangladesh date & time
+export function getBangladeshNow(date: Date = new Date()): Date {
+  try {
+    return new Date(date.toLocaleString('en-US', { timeZone: 'Asia/Dhaka' }));
+  } catch {
+    const utc = date.getTime() + date.getTimezoneOffset() * 60000;
+    return new Date(utc + 6 * 3600000);
+  }
+}
+
 // Get Full Triple Calendar Info
-export function getTripleCalendarInfo(date: Date = new Date()): TripleCalendarInfo {
+export function getTripleCalendarInfo(rawDate: Date = new Date()): TripleCalendarInfo {
+  const date = getBangladeshNow(rawDate);
   // Gregorian
   const gDay = date.getDate();
   const gMonth = date.getMonth();

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { IslamicHeaderConfig } from '@/lib/types';
-import { getTripleCalendarInfo } from '@/lib/calendar';
+import { getTripleCalendarInfo, getBangladeshNow } from '@/lib/calendar';
 import { motion } from 'framer-motion';
 
 interface IslamicScreenProps {
@@ -12,7 +12,8 @@ interface IslamicScreenProps {
 
 type DayTimeState = 'dawn' | 'day' | 'sunset' | 'night';
 
-function computeTimeState(now: Date): DayTimeState {
+function computeTimeState(rawNow: Date): DayTimeState {
+  const now = getBangladeshNow(rawNow);
   const hour = now.getHours();
   const minute = now.getMinutes();
   const month = now.getMonth();
