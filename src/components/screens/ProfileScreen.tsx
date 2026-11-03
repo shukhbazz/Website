@@ -87,7 +87,7 @@ export default function ProfileScreen({ profile, menus, onShopClick }: ProfileSc
         {/* Name: সুখবাজ / Shukhbazz */}
         <div className="space-y-1">
           <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            {lang === 'bn' ? (profile.nameBn || 'সুখবাজ') : (profile.nameEn || 'Shukhbazz')}
+            {lang === 'bn' ? (profile.nameBn || 'সুখবাজ').replace(/শুখবাজ/g, 'সুখবাজ') : (profile.nameEn || 'Shukhbazz')}
           </h2>
           <p className="text-sm sm:text-base font-medium text-cyan-400 flex items-center justify-center gap-1.5 pt-1">
             <Sparkles className="w-4 h-4 text-cyan-400" />

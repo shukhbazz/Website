@@ -100,12 +100,29 @@ async function redisSet<T>(key: string, value: T): Promise<boolean> {
   return false;
 }
 
+// Helper to auto-sanitize spelling across entire config
+function sanitizeConfig(config: SiteConfig): SiteConfig {
+  try {
+    const jsonStr = JSON.stringify(config);
+    if (jsonStr.includes('শুখবাজ')) {
+      const fixedStr = jsonStr.replace(/শুখবাজ/g, 'সুখবাজ');
+      const fixedConfig = JSON.parse(fixedStr) as SiteConfig;
+      // Auto-update Redis in background with sanitized config
+      redisSet('shukhbazz_site_config', fixedConfig).catch(() => {});
+      return fixedConfig;
+    }
+  } catch {
+    // fallback
+  }
+  return config;
+}
+
 // ---------------- Site Config ----------------
 export async function getSiteConfig(): Promise<SiteConfig> {
   // 1. Redis
   const redisVal = await redisGet<SiteConfig>('shukhbazz_site_config');
   if (redisVal) {
-    inMemoryConfig = redisVal;
+    inMemoryConfig = sanitizeConfig(redisVal);
     return inMemoryConfig;
   }
 
@@ -113,7 +130,7 @@ export async function getSiteConfig(): Promise<SiteConfig> {
   try {
     if (fs.existsSync(TMP_CONFIG_FILE)) {
       const data = fs.readFileSync(TMP_CONFIG_FILE, 'utf-8');
-      inMemoryConfig = JSON.parse(data);
+      inMemoryConfig = sanitizeConfig(JSON.parse(data));
       return inMemoryConfig;
     }
   } catch {
@@ -124,7 +141,7 @@ export async function getSiteConfig(): Promise<SiteConfig> {
   try {
     if (fs.existsSync(CONFIG_FILE)) {
       const data = fs.readFileSync(CONFIG_FILE, 'utf-8');
-      inMemoryConfig = JSON.parse(data);
+      inMemoryConfig = sanitizeConfig(JSON.parse(data));
     }
   } catch (err) {
     console.warn('Could not read site-config.json from disk:', err);
@@ -134,14 +151,15 @@ export async function getSiteConfig(): Promise<SiteConfig> {
 }
 
 export async function saveSiteConfig(newConfig: SiteConfig): Promise<boolean> {
-  inMemoryConfig = newConfig;
+  const sanitized = sanitizeConfig(newConfig);
+  inMemoryConfig = sanitized;
 
   // 1. Redis
-  await redisSet('shukhbazz_site_config', newConfig);
+  await redisSet('shukhbazz_site_config', sanitized);
 
   // 2. /tmp
   try {
-    fs.writeFileSync(TMP_CONFIG_FILE, JSON.stringify(newConfig, null, 2), 'utf-8');
+    fs.writeFileSync(TMP_CONFIG_FILE, JSON.stringify(sanitized, null, 2), 'utf-8');
   } catch {
     // ignore
   }
@@ -151,7 +169,7 @@ export async function saveSiteConfig(newConfig: SiteConfig): Promise<boolean> {
     if (!fs.existsSync(DATA_DIR)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
     }
-    fs.writeFileSync(CONFIG_FILE, JSON.stringify(newConfig, null, 2), 'utf-8');
+    fs.writeFileSync(CONFIG_FILE, JSON.stringify(sanitized, null, 2), 'utf-8');
   } catch {
     // expected on serverless
   }

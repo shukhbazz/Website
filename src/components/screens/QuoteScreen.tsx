@@ -17,7 +17,8 @@ export default function QuoteScreen({ quote, index, total }: QuoteScreenProps) {
   const { lang } = useLanguage();
 
   const quoteText = lang === 'bn' ? quote.textBn : quote.textEn;
-  const authorText = lang === 'bn' ? quote.authorBn : quote.authorEn;
+  const rawAuthor = lang === 'bn' ? quote.authorBn : quote.authorEn;
+  const authorText = rawAuthor ? rawAuthor.replace(/শুখবাজ/g, 'সুখবাজ') : '';
   const categoryText = lang === 'bn' ? quote.categoryBn : quote.categoryEn;
 
   // Harmonized picture-based accent color
