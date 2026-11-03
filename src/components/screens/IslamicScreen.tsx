@@ -116,7 +116,7 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
   const sky = getSkyConfig();
 
   return (
-    <section className="w-full h-screen h-[100dvh] min-h-[100dvh] relative flex flex-col justify-between items-center text-white overflow-hidden px-3 pt-2 pb-2 sm:p-8">
+    <section className="w-full h-full min-h-[100dvh] relative flex flex-col justify-between items-center text-white overflow-hidden px-3 pt-2 pb-2 sm:p-8">
       {/* 1. Dynamic Celestial Sky Background (Changes color based on time of day) */}
       <div
         className={`absolute inset-0 bg-gradient-to-b ${sky.skyGradient} transition-colors duration-1000 pointer-events-none`}
@@ -233,18 +233,18 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
       </div>
 
       {/* 5. Top Status Badge (Evocative Ocean State - Safe from Mobile Language Button) */}
-      <div className="pt-2 sm:pt-4 z-10 px-14 sm:px-4 text-center">
+      <div className="pt-2 sm:pt-4 z-10 px-14 sm:px-4 text-center shrink-0">
         <span className="text-[10px] sm:text-[11px] font-mono px-3.5 py-1 rounded-full bg-black/60 border border-white/10 text-slate-300 backdrop-blur-md shadow-sm truncate max-w-full inline-block">
           {sky.statusIcon} {lang === 'bn' ? sky.statusBn : sky.statusEn}
         </span>
       </div>
 
       {/* 6. Center: Bismillah & Quranic Verse with Full Majestic Drop Shadows */}
-      <div className="max-w-4xl mx-auto my-auto text-center space-y-3.5 sm:space-y-7 px-4 relative z-10">
+      <div className="flex-1 flex flex-col justify-center items-center max-w-4xl mx-auto text-center space-y-2.5 sm:space-y-7 px-4 relative z-10 min-h-0">
         {/* Bismillah */}
-        <div className="space-y-1.5 sm:space-y-2">
+        <div className="space-y-1 sm:space-y-2">
           <h1
-            className="text-2xl sm:text-4xl md:text-5xl font-serif text-amber-200 tracking-wider leading-relaxed font-arabic drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]"
+            className="text-xl sm:text-4xl md:text-5xl font-serif text-amber-200 tracking-wider leading-relaxed font-arabic drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]"
             dir="rtl"
           >
             {islamicHeader.bismillahArabic}
@@ -255,13 +255,13 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
         </div>
 
         {/* Divider Ornament */}
-        <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-amber-300/60 to-transparent mx-auto" />
+        <div className="w-20 sm:w-24 h-[1px] bg-gradient-to-r from-transparent via-amber-300/60 to-transparent mx-auto" />
 
         {/* Quranic Verse */}
         {islamicHeader.quranArabic && (
-          <div className="space-y-2 sm:space-y-3 pt-0.5 sm:pt-1">
+          <div className="space-y-1.5 sm:space-y-3 pt-0.5 sm:pt-1">
             <p
-              className="text-xl sm:text-3xl text-emerald-300 font-serif font-arabic leading-relaxed sm:leading-loose tracking-wide drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)]"
+              className="text-lg sm:text-3xl text-emerald-300 font-serif font-arabic leading-relaxed sm:leading-loose tracking-wide drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)]"
               dir="rtl"
             >
               &ldquo;{islamicHeader.quranArabic}&rdquo;
@@ -269,7 +269,7 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
             <p className="text-xs sm:text-lg text-slate-100 italic max-w-2xl mx-auto leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
               &ldquo;{lang === 'bn' ? islamicHeader.quranBn : islamicHeader.quranEn}&rdquo;
             </p>
-            <p className="text-[11px] sm:text-sm text-amber-300 font-mono drop-shadow">
+            <p className="text-[10px] sm:text-sm text-amber-300 font-mono drop-shadow">
               {lang === 'bn' ? islamicHeader.quranSurahBn : islamicHeader.quranSurahEn}
             </p>
           </div>
@@ -277,7 +277,7 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
       </div>
 
       {/* 7. Bottom Area: Triple Calendar & Live Time */}
-      <div className="w-full max-w-5xl mx-auto pb-1.5 sm:pb-4 z-20 px-1 sm:px-0">
+      <div className="w-full max-w-5xl mx-auto pb-2 sm:pb-4 z-20 px-1 sm:px-0 shrink-0">
         {info ? (
           <>
             {/* --- MOBILE VIEW: Clean 3-Tier Split (মোবাইলে ৩ ভাগে স্বয়ংক্রিয়ভাবে সাজানো) --- */}
