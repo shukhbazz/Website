@@ -244,13 +244,64 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
         )}
       </div>
 
-      {/* 7. Bottom Area: Prominent Triple Calendar Bar (Gregorian + Bangla + Hijri + Live Time) */}
+      {/* 7. Bottom Area: Triple Calendar & Live Time (Mobile 3-Tier Split + Desktop Sleek Single Bar) */}
       <div className="w-full max-w-5xl mx-auto mb-16 sm:mb-2 z-20 px-2 sm:px-0">
-        <div className="w-full bg-[#0e7490]/95 backdrop-blur-md text-white py-2.5 px-3.5 sm:py-2.5 sm:px-5 rounded-2xl shadow-2xl border border-cyan-400/40">
-          {info ? (
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-              {/* All 3 Calendars: Gregorian, Bangla & Hijri - Larger, clear and readable on mobile */}
-              <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-cyan-50 text-xs sm:text-sm font-medium">
+        {info ? (
+          <>
+            {/* --- MOBILE VIEW: Clean 3-Tier Split (মোবাইলে ৩ ভাগে স্বয়ংক্রিয়ভাবে সাজানো) --- */}
+            <div className="sm:hidden w-full bg-[#082f49]/95 backdrop-blur-md rounded-2xl p-3 border border-cyan-400/40 shadow-2xl space-y-2">
+              {/* ভাগ ১: ইংরেজি ক্যালেন্ডার */}
+              <div className="flex items-center justify-between text-xs pb-1.5 border-b border-cyan-500/20">
+                <div className="flex items-center gap-2 text-white font-bold">
+                  <span className="text-sm">🗓️</span>
+                  <span>
+                    {lang === 'bn'
+                      ? `${info.gregorian.dayNameBn}, ${info.gregorian.bn}`
+                      : `${info.gregorian.dayNameEn}, ${info.gregorian.en}`}
+                  </span>
+                </div>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/10 text-cyan-200 font-mono">
+                  {lang === 'bn' ? 'ইংরেজি' : 'Gregorian'}
+                </span>
+              </div>
+
+              {/* ভাগ ২: ঐতিহ্যবাহী বাংলা ও হিজরী সন */}
+              <div className="flex flex-col gap-1 text-[12px] font-medium py-0.5">
+                <div className="flex items-center gap-1.5 text-emerald-200">
+                  <span className="text-xs">🌾</span>
+                  <span>{lang === 'bn' ? info.bangla.bn : info.bangla.en}</span>
+                  {info.bangla.seasonBn && (
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-normal">
+                      {lang === 'bn' ? info.bangla.seasonBn : info.bangla.seasonEn}
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center gap-1.5 text-amber-200">
+                  <span className="text-xs">🌙</span>
+                  <span>{lang === 'bn' ? info.hijri.bn : info.hijri.en}</span>
+                </div>
+              </div>
+
+              {/* ভাগ ৩: লাইভ সময় ও প্রহর */}
+              <div className="pt-1.5 border-t border-cyan-500/20 flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+                  </span>
+                  <span className="text-[11px] text-cyan-300 font-medium">
+                    {lang === 'bn' ? 'বর্তমান সময়:' : 'Current Time:'}
+                  </span>
+                </div>
+                <div className="font-mono font-bold text-xs text-white bg-black/60 px-3 py-1 rounded-lg border border-cyan-400/30 shadow-inner">
+                  <span>{lang === 'bn' ? info.time.bn : info.time.en}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* --- DESKTOP VIEW: Sleek Single Horizontal Bar (ডেক্সটপে এক লাইনে রাজকীয় বার) --- */}
+            <div className="hidden sm:flex items-center justify-between w-full bg-[#0e7490]/95 backdrop-blur-md text-white py-2.5 px-5 rounded-2xl shadow-2xl border border-cyan-400/40">
+              <div className="flex items-center gap-3 text-cyan-50 text-sm font-medium">
                 {/* 1. Gregorian (ইংরেজি) */}
                 <span className="font-bold text-white whitespace-nowrap">
                   {lang === 'bn'
@@ -271,16 +322,16 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
                 </span>
               </div>
 
-              {/* 4. Live Time (সময়) - High contrast digital badge with live pulsing dot */}
-              <div className="shrink-0 self-start sm:self-auto flex items-center gap-1.5 font-mono font-bold text-white bg-black/60 px-3 py-1 rounded-lg border border-white/20 text-xs sm:text-xs shadow-inner">
+              {/* 4. Live Time (সময়) */}
+              <div className="shrink-0 flex items-center gap-1.5 font-mono font-bold text-white bg-black/60 px-3.5 py-1 rounded-lg border border-white/20 text-xs shadow-inner">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 <span>{lang === 'bn' ? info.time.bn : info.time.en}</span>
               </div>
             </div>
-          ) : (
-            <div className="h-6 w-56 bg-white/20 rounded animate-pulse mx-auto" />
-          )}
-        </div>
+          </>
+        ) : (
+          <div className="h-10 w-full max-w-md bg-white/10 rounded-2xl animate-pulse mx-auto" />
+        )}
       </div>
     </section>
   );
