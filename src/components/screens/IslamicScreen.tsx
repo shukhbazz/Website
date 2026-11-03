@@ -140,15 +140,44 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
         {/* Outer Radiant Corona Glow */}
         <div className={`w-52 h-52 sm:w-96 sm:h-96 rounded-full ${sky.sunGlow} blur-3xl animate-pulse`} />
 
-        {/* Celestial Body: Sun or Moon */}
-        <div
-          className={`absolute w-14 h-14 sm:w-24 sm:h-24 rounded-full ${sky.bodyColor} ${sky.bodyShadow} transition-all duration-1000 flex items-center justify-center`}
-        >
-          {sky.isMoon && (
-            /* Crescent Moon Shadow Mask */
-            <div className="w-11 h-11 sm:w-19 sm:h-19 rounded-full bg-[#050b1a] -ml-3 -mt-2 sm:-ml-3.5 sm:-mt-2.5" />
-          )}
-        </div>
+        {/* Celestial Body: Sun (Day/Dawn/Sunset) or Authentic Radiant Crescent Moon (Night) */}
+        {sky.isMoon ? (
+          /* Realistic Radiant Crescent Moon (মার্জিত স্নিগ্ধ জ্যোতির্ময় বাঁকা চাঁদ) */
+          <div className="absolute w-14 h-14 sm:w-20 sm:h-20 landscape:w-12 landscape:h-12 transition-all duration-1000 flex items-center justify-center">
+            <svg
+              viewBox="0 0 100 100"
+              className="w-full h-full drop-shadow-[0_0_24px_rgba(224,242,254,0.9)] filter"
+            >
+              <defs>
+                <linearGradient id="lunarCrescentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#ffffff" />
+                  <stop offset="50%" stopColor="#f0fdf4" />
+                  <stop offset="85%" stopColor="#e0f2fe" />
+                  <stop offset="100%" stopColor="#bae6fd" />
+                </linearGradient>
+                <filter id="lunarSoftGlow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="1.5" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+              {/* Crescent Moon Path with elegant curves and tapered tips */}
+              <path
+                d="M 52 8 A 40 40 0 1 0 52 88 A 33 37 0 0 1 52 8 Z"
+                fill="url(#lunarCrescentGrad)"
+                filter="url(#lunarSoftGlow)"
+                transform="rotate(-22 52 48)"
+              />
+            </svg>
+          </div>
+        ) : (
+          /* Glowing Sun for Dawn, Day, Sunset */
+          <div
+            className={`absolute w-14 h-14 sm:w-24 sm:h-24 landscape:w-12 landscape:h-12 rounded-full ${sky.bodyColor} ${sky.bodyShadow} transition-all duration-1000 flex items-center justify-center`}
+          />
+        )}
       </div>
 
       {/* 4. Realistic Ocean Water & Animated Horizon Waves (সমুদ্রের অপর পাশে দিগন্ত ও জলরাশি) */}
