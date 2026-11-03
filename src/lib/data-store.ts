@@ -9,6 +9,7 @@ const DATA_DIR = path.join(process.cwd(), 'src', 'data');
 const CONFIG_FILE = path.join(DATA_DIR, 'site-config.json');
 const STATS_FILE = path.join(DATA_DIR, 'visitor-stats.json');
 const MESSAGES_FILE = path.join(DATA_DIR, 'messages.json');
+const TMP_CONFIG_FILE = path.join('/tmp', 'site-config.json');
 
 // In-memory cache for fast access and fallback in read-only environments
 let inMemoryConfig: SiteConfig = defaultConfig as unknown as SiteConfig;
@@ -23,7 +24,48 @@ function getWeekNumber(d: Date): number {
   return Math.ceil((((date.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
 }
 
-export function getSiteConfig(): SiteConfig {
+// Helper to access Upstash Redis or Vercel KV if available
+function getRedisConfig() {
+  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+  return { url, token, isConfigured: Boolean(url && token) };
+}
+
+export async function getSiteConfig(): Promise<SiteConfig> {
+  const { url, token, isConfigured } = getRedisConfig();
+
+  // 1. Check Cloud Redis if configured (Vercel KV / Upstash)
+  if (isConfigured) {
+    try {
+      const res = await fetch(`${url}/get/shukhbazz_site_config`, {
+        headers: { Authorization: `Bearer ${token}` },
+        cache: 'no-store'
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.result) {
+          const parsed = typeof data.result === 'string' ? JSON.parse(data.result) : data.result;
+          inMemoryConfig = parsed;
+          return inMemoryConfig;
+        }
+      }
+    } catch (err) {
+      console.warn('Could not read from Redis, falling back to disk/memory:', err);
+    }
+  }
+
+  // 2. Check writable /tmp fallback (Vercel serverless environment)
+  try {
+    if (fs.existsSync(TMP_CONFIG_FILE)) {
+      const data = fs.readFileSync(TMP_CONFIG_FILE, 'utf-8');
+      inMemoryConfig = JSON.parse(data);
+      return inMemoryConfig;
+    }
+  } catch {
+    // ignore
+  }
+
+  // 3. Check local codebase file
   try {
     if (fs.existsSync(CONFIG_FILE)) {
       const data = fs.readFileSync(CONFIG_FILE, 'utf-8');
@@ -32,21 +74,48 @@ export function getSiteConfig(): SiteConfig {
   } catch (err) {
     console.warn('Could not read site-config.json from disk, using memory/fallback:', err);
   }
+
   return inMemoryConfig;
 }
 
-export function saveSiteConfig(newConfig: SiteConfig): boolean {
+export async function saveSiteConfig(newConfig: SiteConfig): Promise<boolean> {
   inMemoryConfig = newConfig;
+
+  // 1. Save to Cloud Redis if configured
+  const { url, token, isConfigured } = getRedisConfig();
+  if (isConfigured) {
+    try {
+      await fetch(`${url}/set/shukhbazz_site_config`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newConfig)
+      });
+    } catch (err) {
+      console.warn('Could not save to Redis:', err);
+    }
+  }
+
+  // 2. Save to /tmp fallback (writable on Vercel lambda)
+  try {
+    fs.writeFileSync(TMP_CONFIG_FILE, JSON.stringify(newConfig, null, 2), 'utf-8');
+  } catch {
+    // ignore
+  }
+
+  // 3. Save to local codebase data directory (works on local machine)
   try {
     if (!fs.existsSync(DATA_DIR)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
     }
     fs.writeFileSync(CONFIG_FILE, JSON.stringify(newConfig, null, 2), 'utf-8');
-    return true;
   } catch (err) {
-    console.warn('Could not write site-config.json to disk:', err);
-    return true;
+    console.warn('Could not write site-config.json to disk (expected on read-only serverless):', err);
   }
+
+  return true;
 }
 
 export function getVisitorStats(): VisitorStats {

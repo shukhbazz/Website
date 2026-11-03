@@ -12,7 +12,7 @@ export async function POST(request: Request) {
 
     if (body.action === 'set' && body.stats) {
       // Admin update
-      const currentConfig = getSiteConfig();
+      const currentConfig = await getSiteConfig();
       const providedPass = request.headers.get('x-admin-pass');
       const expectedPass = process.env.ADMIN_PASSWORD || currentConfig.adminPassword || 'admin';
 

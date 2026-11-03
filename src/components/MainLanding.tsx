@@ -21,11 +21,29 @@ interface MainLandingProps {
 }
 
 export default function MainLanding({ initialConfig }: MainLandingProps) {
-  const [config] = useState<SiteConfig>(initialConfig);
+  const [config, setConfig] = useState<SiteConfig>(initialConfig);
   const [shopModalOpen, setShopModalOpen] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const [currentScreen, setCurrentScreen] = useState(0);
   const [direction, setDirection] = useState(1); // 1 = forward/down, -1 = backward/up
+
+  // Ensure latest live config is always fetched from API
+  useEffect(() => {
+    async function syncLatestConfig() {
+      try {
+        const res = await fetch('/api/config', { cache: 'no-store' });
+        if (res.ok) {
+          const fresh = await res.json();
+          if (fresh && fresh.profile) {
+            setConfig(fresh);
+          }
+        }
+      } catch {
+        // retain initialConfig
+      }
+    }
+    syncLatestConfig();
+  }, []);
 
   const quotes = config.quotes || [];
   const gallery = config.gallery || [];

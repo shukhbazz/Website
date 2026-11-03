@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getMessages, addMessage, deleteMessage, getSiteConfig } from '@/lib/data-store';
 
 export async function GET(request: Request) {
-  const currentConfig = getSiteConfig();
+  const currentConfig = await getSiteConfig();
   const providedPass = request.headers.get('x-admin-pass');
   const expectedPass = process.env.ADMIN_PASSWORD || currentConfig.adminPassword || 'admin';
 
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
-    const currentConfig = getSiteConfig();
+    const currentConfig = await getSiteConfig();
     const providedPass = request.headers.get('x-admin-pass');
     const expectedPass = process.env.ADMIN_PASSWORD || currentConfig.adminPassword || 'admin';
 

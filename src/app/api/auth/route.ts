@@ -4,7 +4,7 @@ import { getSiteConfig } from '@/lib/data-store';
 export async function POST(request: Request) {
   try {
     const { password } = await request.json();
-    const config = getSiteConfig();
+    const config = await getSiteConfig();
     const expectedPassword = process.env.ADMIN_PASSWORD || config.adminPassword || 'admin';
 
     if (password === expectedPassword) {

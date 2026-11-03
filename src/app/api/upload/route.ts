@@ -5,7 +5,7 @@ import { getSiteConfig } from '@/lib/data-store';
 
 export async function POST(req: NextRequest) {
   try {
-    const config = getSiteConfig();
+    const config = await getSiteConfig();
     const adminPass = req.headers.get('x-admin-pass');
 
     // Auth check

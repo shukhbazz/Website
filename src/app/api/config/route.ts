@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getSiteConfig, saveSiteConfig } from '@/lib/data-store';
 
 export async function GET() {
-  const config = getSiteConfig();
+  const config = await getSiteConfig();
   // Strip admin password before sending to public client
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { adminPassword, ...publicConfig } = config;
@@ -12,7 +12,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const currentConfig = getSiteConfig();
+    const currentConfig = await getSiteConfig();
 
     // Verify admin authorization
     const authHeader = request.headers.get('authorization');
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
       adminPassword: newPassword || currentConfig.adminPassword
     };
 
-    saveSiteConfig(updated);
+    await saveSiteConfig(updated);
     return NextResponse.json({ success: true, message: 'Settings updated successfully' });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to update configuration', details: String(error) }, { status: 500 });
