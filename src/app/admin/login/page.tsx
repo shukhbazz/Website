@@ -3,12 +3,13 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ShieldCheck, Lock, ArrowRight, ArrowLeft, AlertCircle } from 'lucide-react';
+import { ShieldCheck, Lock, ArrowRight, ArrowLeft, AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function AdminLoginPage() {
   const router = useRouter();
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -79,30 +80,40 @@ export default function AdminLoginPage() {
           </div>
         )}
 
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleLogin} className="space-y-5">
           <div>
             <label className="block text-xs font-medium text-slate-300 mb-1.5">
               অ্যাডমিন পাসওয়ার্ড
             </label>
             <div className="relative">
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="ডিফল্ট পাসওয়ার্ড: admin"
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-800/90 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-400 transition"
+                placeholder="গোপন পাসওয়ার্ড লিখুন"
+                className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-800/90 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-400 transition"
               />
               <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-2.5 text-slate-400 hover:text-white transition p-0.5 cursor-pointer"
+                title={showPassword ? 'পাসওয়ার্ড লুকান' : 'পাসওয়ার্ড দেখুন'}
+                aria-label="Toggle password visibility"
+              >
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4 text-cyan-400" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
+              </button>
             </div>
-            <p className="text-[11px] text-slate-500 mt-1">
-              * প্রথমবার লগইনের জন্য ডিফল্ট পাসওয়ার্ড: <span className="font-mono text-cyan-400">admin</span>
-            </p>
           </div>
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !password}
             className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-500 via-indigo-600 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-white font-medium text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 transition-all cursor-pointer disabled:opacity-50"
           >
             <span>{loading ? 'যাচাই করা হচ্ছে...' : 'লগইন করুন'}</span>

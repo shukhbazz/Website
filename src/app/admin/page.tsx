@@ -26,7 +26,9 @@ import {
   LayoutDashboard,
   Clock,
   Bell,
-  Globe
+  Globe,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 import ImageUploader from '@/components/admin/ImageUploader';
 
@@ -43,6 +45,7 @@ export default function AdminDashboardPage() {
     'overview' | 'popup' | 'islamic' | 'profile' | 'quotes' | 'gallery' | 'menus' | 'contacts' | 'inbox' | 'visitors' | 'security'
   >('overview');
   const [newPassword, setNewPassword] = useState('');
+  const [showNewPassword, setShowNewPassword] = useState(false);
 
   // Check auth & fetch data
   useEffect(() => {
@@ -1629,13 +1632,28 @@ export default function AdminDashboardPage() {
               <div className="max-w-md space-y-4">
                 <div>
                   <label className="block text-xs font-medium text-slate-300 mb-1">নতুন পাসওয়ার্ড</label>
-                  <input
-                    type="password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="নতুন পাসওয়ার্ড লিখুন"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-cyan-500"
-                  />
+                  <div className="relative">
+                    <input
+                      type={showNewPassword ? 'text' : 'password'}
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      placeholder="নতুন পাসওয়ার্ড লিখুন"
+                      className="w-full pl-3.5 pr-10 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white focus:outline-none focus:border-cyan-500"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowNewPassword(!showNewPassword)}
+                      className="absolute right-3 top-2.5 text-slate-400 hover:text-white transition p-0.5 cursor-pointer"
+                      title={showNewPassword ? 'পাসওয়ার্ড লুকান' : 'পাসওয়ার্ড দেখুন'}
+                      aria-label="Toggle password visibility"
+                    >
+                      {showNewPassword ? (
+                        <EyeOff className="w-4 h-4 text-amber-400" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </button>
+                  </div>
                 </div>
                 <button
                   type="button"
