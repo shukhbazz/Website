@@ -35,10 +35,16 @@ export async function getSiteConfig(): Promise<SiteConfig> {
   const { url, token, isConfigured } = getRedisConfig();
 
   // 1. Check Cloud Redis if configured (Vercel KV / Upstash)
-  if (isConfigured) {
+  if (isConfigured && url && token) {
     try {
-      const res = await fetch(`${url}/get/shukhbazz_site_config`, {
-        headers: { Authorization: `Bearer ${token}` },
+      const cleanUrl = url.replace(/\/+$/, '');
+      const res = await fetch(cleanUrl, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(['GET', 'shukhbazz_site_config']),
         cache: 'no-store'
       });
       if (res.ok) {
@@ -81,18 +87,22 @@ export async function getSiteConfig(): Promise<SiteConfig> {
 export async function saveSiteConfig(newConfig: SiteConfig): Promise<boolean> {
   inMemoryConfig = newConfig;
 
-  // 1. Save to Cloud Redis if configured
+  // 1. Save to Cloud Redis if configured (Upstash / Vercel KV)
   const { url, token, isConfigured } = getRedisConfig();
-  if (isConfigured) {
+  if (isConfigured && url && token) {
     try {
-      await fetch(`${url}/set/shukhbazz_site_config`, {
+      const cleanUrl = url.replace(/\/+$/, '');
+      const res = await fetch(cleanUrl, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(newConfig)
+        body: JSON.stringify(['SET', 'shukhbazz_site_config', JSON.stringify(newConfig)])
       });
+      if (!res.ok) {
+        console.warn('Upstash Redis set command response not OK:', res.status);
+      }
     } catch (err) {
       console.warn('Could not save to Redis:', err);
     }
