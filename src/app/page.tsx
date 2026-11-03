@@ -2,7 +2,6 @@ import { getSiteConfig } from '@/lib/data-store';
 import MainLanding from '@/components/MainLanding';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 0;
 
 export default async function HomePage() {
   const config = await getSiteConfig();

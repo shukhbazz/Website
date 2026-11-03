@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
 
-export const dynamic = 'force-dynamic';
-
 export async function GET() {
   const allKeys = Object.keys(process.env);
   const relevantKeys = allKeys.filter(
