@@ -1,0 +1,187 @@
+{
+  "islamicHeader": {
+    "enabled": true,
+    "bismillahArabic": "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+    "bismillahBn": "পরম করুণাময় অসীম দয়ালু আল্লাহর নামে শুরু করছি",
+    "bismillahEn": "In the name of Allah, the Most Gracious, the Most Merciful",
+    "quranArabic": "فَإِنَّ مَعَ ٱلْعُسْرِ يُسْرًا • إِنَّ مَعَ ٱلْعُسْرِ يُسْرًا",
+    "quranBn": "নিশ্চয়ই কষ্টের সাথেই স্বস্তি আছে। নিশ্চয়ই কষ্টের সাথেই স্বস্তি আছে।",
+    "quranEn": "For indeed, with hardship [will be] ease. Indeed, with hardship [will be] ease.",
+    "quranSurahBn": "— সূরা আল-ইনশিরাহ: ৫-৬",
+    "quranSurahEn": "— Surah Ash-Sharh: 5-6"
+  },
+  "profile": {
+    "brandName": "Shukhbazz",
+    "nameBn": "শুখবাজ",
+    "nameEn": "Shukhbazz",
+    "titleBn": "ব্যক্তিগত স্পেস, নিজস্ব ভাবনা ও জীবনদর্শন",
+    "titleEn": "Personal Space, Reflections & Philosophy",
+    "bioBn": "স্বাগতম আমার একান্ত ব্যক্তিগত ডিজিটাল ভুবনে। এটি কোনো চিরাচরিত বাণিজ্যিক পোর্টফোলিও নয়; শখের বশে গড়ে তোলা এমন এক স্পেস যেখানে আমার মনের গভীরের ভাবনা, প্রিয় উক্তি, স্মৃতিময় কিছু মুহূর্ত এবং আমার বিভিন্ন কাজের দিকনির্দেশনা সংকলিত রয়েছে।",
+    "bioEn": "Welcome to my personal digital sanctum. Created out of passion, this is not a traditional commercial portfolio, but a mindful space gathering my deeper reflections, thoughts, cherished moments, and pathways to my creative world.",
+    "logoUrl": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
+    "avatarUrl": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
+    "avatarUrls": [
+      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80",
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80"
+    ],
+    "statusBn": "🟢 নিজের মতো করে ভাবছি ও তৈরি করছি",
+    "statusEn": "🟢 Exploring thoughts & creating with passion",
+    "availableForWork": true
+  },
+  "contacts": {
+    "facebookUrl": "https://facebook.com/your-profile",
+    "youtubeUrl": "https://youtube.com/@your-channel",
+    "whatsappNumber": "+8801700000000",
+    "instagramUrl": "https://instagram.com/your-username",
+    "twitterUrl": "https://x.com/your-username",
+    "threadsUrl": "https://threads.net/@your-username",
+    "linkedinUrl": "https://linkedin.com/in/your-profile",
+    "githubUrl": "https://github.com/your-username",
+    "telegramUrl": "https://t.me/your-telegram",
+    "email": "contact@yourdomain.bd",
+    "phone": "+8801700000000",
+    "addressBn": "ঢাকা, বাংলাদেশ",
+    "addressEn": "Dhaka, Bangladesh",
+    "enabledSocials": {
+      "facebook": true,
+      "youtube": true,
+      "whatsapp": true,
+      "instagram": true,
+      "twitter": true,
+      "threads": true,
+      "linkedin": true,
+      "github": true,
+      "telegram": true
+    },
+    "customLinks": []
+  },
+  "menus": [
+    {
+      "id": "portfolio",
+      "labelBn": "পোর্টফলিও",
+      "labelEn": "Portfolio",
+      "url": "https://portfolio.yourdomain.bd",
+      "enabled": true,
+      "isExternal": true,
+      "order": 1
+    },
+    {
+      "id": "blog",
+      "labelBn": "ব্লগ",
+      "labelEn": "Blog",
+      "url": "https://blog.yourdomain.bd",
+      "enabled": true,
+      "isExternal": true,
+      "order": 2
+    },
+    {
+      "id": "shop",
+      "labelBn": "সপ",
+      "labelEn": "Shop",
+      "url": "#shop",
+      "enabled": true,
+      "isExternal": false,
+      "isUpcoming": true,
+      "upcomingMessageBn": "আমাদের ডিজিটাল শপ খুব শীঘ্রই চালু হচ্ছে! চমৎকার সব ডিজিটাল এসেট ও সার্ভিস পেতে সঙ্গে থাকুন।",
+      "upcomingMessageEn": "Our exclusive digital shop is launching soon! Stay tuned for premium digital goods, services and downloads.",
+      "order": 3
+    }
+  ],
+  "quotes": [
+    {
+      "id": "q1",
+      "textBn": "শখের বশে শুরু করা ছোট ছোট পদক্ষেপগুলোই একসময় জীবনের সবচেয়ে অর্থবহ ও সুন্দর গল্প হয়ে দাঁড়ায়।",
+      "textEn": "Small steps taken out of pure passion often evolve into the most meaningful and beautiful stories of life.",
+      "authorBn": "— শুখবাজ",
+      "authorEn": "— Shukhbazz",
+      "categoryBn": "জীবনদর্শন",
+      "categoryEn": "Life Perspective",
+      "bgImage": "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1400&q=80",
+      "accentColor": "#38bdf8"
+    },
+    {
+      "id": "q2",
+      "textBn": "শব্দের চেয়ে নীরবতা এবং জটিল হিসাবের চেয়ে সহজ সরল দর্শন অনেক সময় অনেক গভীর অর্থ বহন করে।",
+      "textEn": "Sometimes silence speaks louder than words, and simple philosophy carries deeper truths than complex equations.",
+      "authorBn": "— শুখবাজ",
+      "authorEn": "— Shukhbazz",
+      "categoryBn": "অনুপ্রেরণা",
+      "categoryEn": "Inspiration",
+      "bgImage": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1400&q=80",
+      "accentColor": "#f59e0b"
+    },
+    {
+      "id": "q3",
+      "textBn": "ভবিষ্যত নিয়ে অতিরিক্ত দুশ্চিন্তা করার চেয়ে বর্তমানের প্রতিটি ক্ষণকে সৃষ্টিশীলভাবে উপভোগ করাই আসল বেঁচে থাকা।",
+      "textEn": "Living truly is not about worrying endlessly over the unknown future, but infusing every present moment with creativity.",
+      "authorBn": "— শুখবাজ",
+      "authorEn": "— Shukhbazz",
+      "categoryBn": "সৃষ্টিশীলতা",
+      "categoryEn": "Creativity",
+      "bgImage": "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1400&q=80",
+      "accentColor": "#10b981"
+    }
+  ],
+  "gallery": [
+    {
+      "id": "g1",
+      "imageUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+      "titleBn": "প্রযুক্তি ও সৃষ্টিশীলতার সন্ধিক্ষণ",
+      "titleEn": "Intersection of Tech & Creativity",
+      "descBn": "ডিজিটাল বিশ্বের নিখুঁত স্থাপত্য ও নতুন ধারার সম্ভাবনা।",
+      "descEn": "Architecting modern digital solutions with elegance.",
+      "categoryBn": "টেকনোলজি",
+      "categoryEn": "Technology",
+      "accentColor": "#60a5fa"
+    },
+    {
+      "id": "g2",
+      "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+      "titleBn": "প্রশান্তির দিগন্ত",
+      "titleEn": "Horizon of Serenity",
+      "descBn": "ব্যস্ততার মাঝে কিছুটা স্থিরতা ও গভীর ভাবনার মুহূর্ত।",
+      "descEn": "Finding calm and reflective stillness amidst the rush.",
+      "categoryBn": "প্রকৃতি ও ভাবনা",
+      "categoryEn": "Nature & Calm",
+      "accentColor": "#2dd4bf"
+    },
+    {
+      "id": "g3",
+      "imageUrl": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80",
+      "titleBn": "অনন্ত মহাকাশ ও কল্পনা",
+      "titleEn": "Cosmos & Imagination",
+      "descBn": "যত বড় চিন্তা, তত বড় সম্ভাবনা। সীমানাহীন ভাবনা।",
+      "descEn": "Boundless aspirations and cosmic imagination.",
+      "categoryBn": "কল্পনা",
+      "categoryEn": "Cosmos",
+      "accentColor": "#c084fc"
+    }
+  ],
+  "chat": {
+    "enabled": false,
+    "greetingBn": "আসসালামু আলাইকুম!",
+    "greetingEn": "Hello!"
+  },
+  "features": {
+    "showCalendar": true,
+    "showVisitorCounter": true,
+    "showStatusBadge": true,
+    "showQRCode": true,
+    "showQuotes": true,
+    "showGallery": true
+  },
+  "popupNotification": {
+    "enabled": false,
+    "titleBn": "জরুরি বিজ্ঞপ্তি ও বার্তা",
+    "titleEn": "Important Notice & Announcement",
+    "messageBn": "আমার ব্যক্তিগত স্পেসে আপনাকে স্বাগতম! এখানে আপনি আমার ভাবনা, নির্বাচিত উক্তি ও সৃষ্টিশীল মুহূর্তগুলো উপভোগ করতে পারেন।",
+    "messageEn": "Welcome to my personal digital space! Explore my reflections, curated thoughts, and creative moments.",
+    "imageUrl": "",
+    "buttonTextBn": "ঠিক আছে",
+    "buttonTextEn": "Got It",
+    "buttonUrl": "",
+    "showOncePerSession": true
+  },
+  "adminPassword": "admin"
+}
