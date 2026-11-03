@@ -328,7 +328,7 @@ export default function MainLanding({ initialConfig }: MainLandingProps) {
       {/* 1. Global Content Protection (Anti-Copy & Anti-Download) */}
       <ContentProtection />
 
-      <div className="relative w-full h-screen h-[100dvh] min-h-[100dvh] overflow-hidden bg-slate-950 text-slate-100 selection:bg-cyan-500 selection:text-slate-950 font-sans overscroll-none">
+      <div className="relative w-full h-screen h-[100dvh] min-h-[100dvh] overflow-hidden bg-slate-950 text-slate-100 selection:bg-cyan-500 selection:text-slate-950 font-sans overscroll-none touch-none">
         {/* 2. Language Switcher (Fixed at Top-Right Corner) */}
         <LanguageToggle />
 
@@ -356,7 +356,7 @@ export default function MainLanding({ initialConfig }: MainLandingProps) {
           </AnimatePresence>
         </div>
 
-        {/* 5. Live Chat Widget (FROZEN & FIXED at bottom-right across all screens) */}
+        {/* 5. Live Chat Widget (Hidden on mobile for Page 0 / IslamicScreen, visible on desktop and all other mobile pages) */}
         <LiveChatWidget
           chat={{ ...config.chat, enabled: true }}
           profile={config.profile}
@@ -364,6 +364,7 @@ export default function MainLanding({ initialConfig }: MainLandingProps) {
           isOpen={chatOpen}
           onToggle={() => setChatOpen(!chatOpen)}
           onClose={() => setChatOpen(false)}
+          hideOnMobile={currentScreen === 0}
         />
 
         {/* 6. Shop "Coming Soon" Modal */}

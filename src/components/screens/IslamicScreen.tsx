@@ -12,34 +12,37 @@ interface IslamicScreenProps {
 
 type DayTimeState = 'dawn' | 'day' | 'sunset' | 'night';
 
+function computeTimeState(now: Date): DayTimeState {
+  const hour = now.getHours();
+  const minute = now.getMinutes();
+  const month = now.getMonth();
+  const timeInDecimal = hour + minute / 60;
+
+  // Seasonal sunset calculation for Bangladesh
+  const sunsetStart = (month >= 9 || month <= 1) ? 17.15 : 18.0;
+  const nightStart = sunsetStart + 1.5;
+
+  if (timeInDecimal >= 5.0 && timeInDecimal < 6.8) {
+    return 'dawn';
+  } else if (timeInDecimal >= 6.8 && timeInDecimal < (sunsetStart - 0.4)) {
+    return 'day';
+  } else if (timeInDecimal >= (sunsetStart - 0.4) && timeInDecimal < nightStart) {
+    return 'sunset';
+  } else {
+    return 'night';
+  }
+}
+
 export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
   const { lang } = useLanguage();
-  const [info, setInfo] = useState<ReturnType<typeof getTripleCalendarInfo> | null>(null);
-  const [timeState, setTimeState] = useState<DayTimeState>('day');
+  const [info, setInfo] = useState<ReturnType<typeof getTripleCalendarInfo> | null>(() => getTripleCalendarInfo(new Date()));
+  const [timeState, setTimeState] = useState<DayTimeState>(() => computeTimeState(new Date()));
 
   useEffect(() => {
     const updateTimeAndSun = () => {
       const now = new Date();
       setInfo(getTripleCalendarInfo(now));
-
-      const hour = now.getHours();
-      const minute = now.getMinutes();
-      const month = now.getMonth();
-      const timeInDecimal = hour + minute / 60;
-
-      // Seasonal sunset calculation for Bangladesh
-      const sunsetStart = (month >= 9 || month <= 1) ? 17.15 : 18.0;
-      const nightStart = sunsetStart + 1.5;
-
-      if (timeInDecimal >= 5.0 && timeInDecimal < 6.8) {
-        setTimeState('dawn');
-      } else if (timeInDecimal >= 6.8 && timeInDecimal < (sunsetStart - 0.4)) {
-        setTimeState('day');
-      } else if (timeInDecimal >= (sunsetStart - 0.4) && timeInDecimal < nightStart) {
-        setTimeState('sunset');
-      } else {
-        setTimeState('night');
-      }
+      setTimeState(computeTimeState(now));
     };
 
     updateTimeAndSun();
@@ -274,7 +277,7 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
       </div>
 
       {/* 7. Bottom Area: Triple Calendar & Live Time */}
-      <div className="w-full max-w-5xl mx-auto pb-16 sm:pb-4 z-20 px-2 sm:px-0">
+      <div className="w-full max-w-5xl mx-auto pb-3 sm:pb-4 z-20 px-2 sm:px-0">
         {info ? (
           <>
             {/* --- MOBILE VIEW: Clean 3-Tier Split (মোবাইলে ৩ ভাগে স্বয়ংক্রিয়ভাবে সাজানো) --- */}
@@ -322,7 +325,7 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
                     {lang === 'bn' ? 'বর্তমান সময়:' : 'Current Time:'}
                   </span>
                 </div>
-                <div className="font-mono font-bold text-xs text-white bg-black/60 px-3 py-1 rounded-lg border border-cyan-400/30 shadow-inner">
+                <div className="font-mono font-bold text-xs text-white bg-black/60 px-3 py-1 rounded-lg border border-cyan-400/30 shadow-inner" suppressHydrationWarning>
                   <span>{lang === 'bn' ? info.time.bn : info.time.en}</span>
                 </div>
               </div>
@@ -352,7 +355,7 @@ export default function IslamicScreen({ islamicHeader }: IslamicScreenProps) {
               </div>
 
               {/* 4. Live Time (সময়) */}
-              <div className="shrink-0 flex items-center gap-1.5 font-mono font-bold text-white bg-black/60 px-3.5 py-1 rounded-lg border border-white/20 text-xs shadow-inner">
+              <div className="shrink-0 flex items-center gap-1.5 font-mono font-bold text-white bg-black/60 px-3.5 py-1 rounded-lg border border-white/20 text-xs shadow-inner" suppressHydrationWarning>
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 <span>{lang === 'bn' ? info.time.bn : info.time.en}</span>
               </div>

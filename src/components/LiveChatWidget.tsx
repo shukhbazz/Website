@@ -13,6 +13,7 @@ interface LiveChatWidgetProps {
   isOpen: boolean;
   onToggle: () => void;
   onClose: () => void;
+  hideOnMobile?: boolean;
 }
 
 export default function LiveChatWidget({
@@ -21,7 +22,8 @@ export default function LiveChatWidget({
   whatsappNumber,
   isOpen,
   onToggle,
-  onClose
+  onClose,
+  hideOnMobile = false
 }: LiveChatWidgetProps) {
   const { lang, t } = useLanguage();
   const [userName, setUserName] = useState('');
@@ -68,7 +70,7 @@ export default function LiveChatWidget({
   return (
     <>
       {/* Floating Chat Trigger Button */}
-      <div className="fixed bottom-6 right-6 z-40">
+      <div className={`fixed bottom-6 right-6 z-40 transition-all duration-300 ${hideOnMobile ? 'hidden sm:block' : ''}`}>
         <motion.button
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.95 }}
@@ -97,7 +99,7 @@ export default function LiveChatWidget({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 30, scale: 0.92 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="allow-scroll fixed bottom-22 right-4 sm:right-6 z-50 w-[92vw] max-w-[370px] rounded-3xl bg-slate-900 border border-slate-700 shadow-2xl backdrop-blur-2xl overflow-hidden flex flex-col"
+            className={`allow-scroll fixed bottom-22 right-4 sm:right-6 z-50 w-[92vw] max-w-[370px] rounded-3xl bg-slate-900 border border-slate-700 shadow-2xl backdrop-blur-2xl overflow-hidden flex flex-col ${hideOnMobile ? 'hidden sm:flex' : ''}`}
           >
             {/* Header */}
             <div className="p-4 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
