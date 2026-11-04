@@ -99,7 +99,7 @@ export const metadata: Metadata = {
     apple: '/icon.svg',
   },
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',
+    google: '9tzUgs9MqP7WXmXw3uZO_y2zbxuCXpCf4E9K3Hbj5vE',
   },
 };
 
@@ -163,6 +163,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
       <head>
+        <meta name="google-site-verification" content="9tzUgs9MqP7WXmXw3uZO_y2zbxuCXpCf4E9K3Hbj5vE" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
